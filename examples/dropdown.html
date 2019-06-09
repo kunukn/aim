@@ -22,6 +22,7 @@
                 <div class="checkbox">
                   <label>
                     <input
+                      id="input-debug"
                       type="checkbox"
                       onclick="  $.aim.setDebug($(this).prop('checked'))"
                     />
@@ -94,6 +95,8 @@
     <script src="../jquery.aim.js"></script>
     <script>
       (function() {
+        document.querySelector('#input-debug').click();
+
         $('#target1').aim({
           className: 'open',
         });
