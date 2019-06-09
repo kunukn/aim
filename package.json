@@ -1,6 +1,6 @@
 {
   "name": "jquery-aim",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A jQuery plugin to make webistes more usable by guessing which element is going to be hovered/clicked",
   "main": "jquery.aim.js",
   "directories": {
