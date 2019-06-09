@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>jQuery Aim Example Menu</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="style.css" />
-    </head>
-    <body>
-        <div id="main_container" class="container full-width"> 
-            <div class="navbar">
-                <div class="col-xs-offset-2">
-                    <button id="hamburger" class="btn navbar-toggle pull-left" type="button">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2">
-                    <ul id="menu" class="nav">
-                        <li><a href="#">Dashboard</a></li>
-                        <li><a href="#">Newsfeed</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Videos</a></li>
-                        <li><a href="#">Music</a></li>
-                        <li><a href="#">Settings</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-xs-8">
-                    <div class="row buffer-top">
-                        <div class="panel panel-primary">
-                            <div class="panel-body text-center">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" onclick="$.aim.setDebug($(this).prop('checked'))"> Toggle debug mode
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <title>jQuery Aim Example Menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0" />
+    <link
+      rel="stylesheet"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="main_container" class="container full-width">
+      <div class="navbar">
+        <div class="col-xs-offset-2">
+          <button
+            id="hamburger"
+            class="btn navbar-toggle pull-left"
+            type="button"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          <ul id="menu" class="nav">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Newsfeed</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Videos</a></li>
+            <li><a href="#">Music</a></li>
+            <li><a href="#">Settings</a></li>
+          </ul>
         </div>
 
-        <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="../jquery.aim.js"></script>
-        <script>
-            $().ready(function() {
-                $('#hamburger').aim({
-                    aimEnter: function() {
-                        $('#menu').show();
-                    }, aimExit: function() {
-                        $('#menu').hide();
-                    }
-                });
-            });
-        </script>
-    </body>
+        <div class="col-xs-8">
+          <div class="row buffer-top">
+            <div class="panel panel-primary">
+              <div class="panel-body text-center">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked
+                      onclick="$.aim.setDebug($(this).prop('checked'))"
+                    />
+                    Toggle debug mode
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="../jquery.aim.js"></script>
+    <script>
+      (function() {
+        $('#hamburger').aim({
+          aimEnter: function() {
+            $('#menu').show();
+          },
+          aimExit: function() {
+            $('#menu').hide();
+          },
+        });
+      })();
+    </script>
+  </body>
 </html>

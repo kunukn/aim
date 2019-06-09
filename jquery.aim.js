@@ -1,5 +1,5 @@
 (function($) {
-  var elementList = [];
+  let elementList = [];
   /**
    * v Velocity of the mouse pointer
    * vd Magnitude of velocity
@@ -101,12 +101,14 @@
   $.aim = {};
 
   $.aim.setDebug = function(val) {
+    let debugElement = document.querySelector('#jquery-aim-debug');
+
     if (val) {
-      if (document.querySelector('#jquery-aim-debug')) return;
+      if (debugElement) return;
 
       anticipator.elem = createDebugObject();
     } else {
-      $('#jquery-aim-debug').remove();
+      debugElement && debugElement.remove();
       anticipator.elem = null;
     }
     DEBUG = val;
@@ -209,15 +211,30 @@
     $this.data('aim-data').options = opts;
   }
 
-  $().ready(function() {
-    document.addEventListener(
-      'mousemove',
-      function(e) {
-        (mouseX = e.clientX), (mouseY = e.clientY);
-      },
-      false
-    );
-  });
+  document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+      document.addEventListener(
+        'mousemove',
+        function(e) {
+          (mouseX = e.clientX), (mouseY = e.clientY);
+        },
+        false
+      );
+    },
+    false
+  );
+
+  0 &&
+    $().ready(function() {
+      document.addEventListener(
+        'mousemove',
+        function(e) {
+          (mouseX = e.clientX), (mouseY = e.clientY);
+        },
+        false
+      );
+    });
 
   var timer = setInterval(function() {
     var a = anticipator;
@@ -237,9 +254,6 @@
 
     DEBUG &&
       a.elem.css({
-        '-webkit-transform': prop,
-        '-moz-transform': prop,
-        '-ms-transform': prop,
         transform: prop,
         /*width: tbRad * 2,
                      height: tbRad * 2,
