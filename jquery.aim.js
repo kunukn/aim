@@ -202,13 +202,13 @@
     );
   }
 
-  function init(opts) {
+  function init(options) {
     var $this = $(this);
     if ($.inArray($this, elementList) > -1) return;
 
     elementList.push($this);
     addProperties($this);
-    $this.data('aim-data').options = opts;
+    $this.data('aim-data').options = options;
   }
 
   document.addEventListener(
@@ -225,18 +225,7 @@
     false
   );
 
-  0 &&
-    $().ready(function() {
-      document.addEventListener(
-        'mousemove',
-        function(e) {
-          (mouseX = e.clientX), (mouseY = e.clientY);
-        },
-        false
-      );
-    });
-
-  var timer = setInterval(function() {
+  let timer = setInterval(function() {
     var a = anticipator;
 
     if (!elementList.length) return;
@@ -268,9 +257,8 @@
      * If it's greater than 1, aimEnter function will be called
      * if it's less than or equal to 0, aimExit function will be called
      */
-    for (var i = 0; i < elementList.length; i++) {
-      var target = elementList[i];
 
+    elementList.forEach(target => {
       var data = target.data('aim-data');
 
       var isctRat = intersectRatio(data.rect, a.rect);
@@ -294,7 +282,7 @@
           data.increment = 2;
           DEBUG && a.elem.css('background-color', 'tomato');
         }
-        break;
+        return;
       } else {
         DEBUG && a.elem.css('background-color', 'yellowgreen');
       }
@@ -312,6 +300,11 @@
             data.options.aimExit.call(target, true);
         }
       }
+    })
+
+    for (var i = 0; i < elementList.length; i++) {
+      var target = elementList[i];
+
     }
   }, 16); //~60 FPS
 })(jQuery);

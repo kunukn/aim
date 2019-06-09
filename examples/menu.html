@@ -45,8 +45,8 @@
                 <div class="checkbox">
                   <label>
                     <input
+                      id="input-menu"
                       type="checkbox"
-                      checked
                       onclick="$.aim.setDebug($(this).prop('checked'))"
                     />
                     Toggle debug mode
@@ -68,6 +68,10 @@
     <script src="../jquery.aim.js"></script>
     <script>
       (function() {
+
+        document.querySelector('#input-menu').click();
+
+
         $('#hamburger').aim({
           aimEnter: function() {
             $('#menu').show();
