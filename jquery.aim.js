@@ -184,7 +184,7 @@
    * @returns {Object}
    */
   function createDebugObject() {
-    var size = anticipator.size;
+    let size = anticipator.size;
     let element = document.createElement('div');
     element.setAttribute('id', 'aim-debug');
     element.className = 'aim-debug';
@@ -207,11 +207,11 @@
    */
 
   function intersectRatio(rect, rect2) {
-    var x_overlap = Math.max(
+    let x_overlap = Math.max(
       0,
       Math.min(rect.x1, rect2.x1) - Math.max(rect.x0, rect2.x0)
     );
-    var y_overlap = Math.max(
+    let y_overlap = Math.max(
       0,
       Math.min(rect.y1, rect2.y1) - Math.max(rect.y0, rect2.y0)
     );
@@ -223,7 +223,7 @@
   }
 
   function init(options) {
-    var $this = $(this);
+    let $this = $(this);
     if ($.inArray($this, elementList) > -1) return;
 
     elementList.push($this);
@@ -246,8 +246,8 @@
     false
   );
 
-  let timer = setInterval(() => {
-    var a = anticipator;
+  let tick = () => {
+    let a = anticipator;
 
     if (!elementList.length) return;
 
@@ -322,5 +322,18 @@
         }
       }
     });
-  }, 16); //~60 FPS
+  };
+
+  let isRunning = true;
+  let run = () => {
+    let token;
+    tick();
+    if (isRunning) {
+      token = requestAnimationFrame(run);
+    } else {
+      cancelAnimationFrame(token);
+    }
+  };
+
+  run();
 })(jQuery);
