@@ -1,10 +1,10 @@
 (function($) {
   let elementList = [];
   /**
-   * v Velocity of the mouse pointer
-   * vd Magnitude of velocity
-   * p Position of the mouse pointer
-   * t Average delta time for a simple calculation of new position, x = x0 +  v * t
+   * mouseVelocity Velocity of the mouse pointer
+   * mouseMagnitude Magnitude of velocity
+   * mousePosition Position of the mouse pointer
+   * avgDeltaTime Average delta time for a simple calculation of new position, x = x0 +  v * t
    * mouseX the last retrived x coordinate of mouse cursor
    * mouseY the last retrived y coordinate of mouse cursor
    * anticipator a jquery object to debug where mouse is aiming
@@ -12,16 +12,23 @@
    * anRad Radius (or size) of the anticipator, increases as mouse move faster
    */
 
-  let v = { x: 0, y: 0 },
-    vd = 0,
-    p = { x: 0, y: 0 },
-    t = 12,
+  let getMagnitude = v => Math.sqrt(v.x * v.x + v.y * v.y);
+  let resetVelocity = v => {
+    v.x = 0;
+    v.y = 0;
+  };
+  let createVector = () => ({ x: 0, y: 0 });
+
+  let mouseVelocity = createVector(),
+    mouseMagnitude = getMagnitude(mouseVelocity),
+    mousePosition = createVector(),
+    avgDeltaTime = 12,
     mouseX = 0,
     mouseY = 0,
     DEBUG = false,
     anticipator = {
       size: 50,
-      center: { x: 0, y: 0 },
+      center: createVector(),
       effectiveSize: 1,
     };
   anticipator.rect = {
@@ -36,55 +43,76 @@
    *
    * @function anticipateFunc
    *
-   * @param {type} p position of anticipator
-   * @param {type} v velocity of anticipator
+   * @param {type} position: position of anticipator
+   * @param {type} velocity: velocity of anticipator
    * @param {type} mouseX mouse X coordinate
    * @param {type} mouseY mouse Y coordinate
    * @param {type} anticipator anticipator object
    * @returns {undefined}
    */
 
-  function anticipateFunc(p, v, mouseX, mouseY, anticipator) {
+  function anticipateFunc(position, velocity, mouseX, mouseY, anticipator) {
     let a = anticipator;
 
-    //smoothen velocity values with ratio 0.7/0.3
-    if (p.x && p.y) {
-      v.x = v.x * 0.7 + (mouseX - p.x) * 0.3;
-      v.y = v.y * 0.7 + (mouseY - p.y) * 0.3;
+    // smoothen velocity values with ratio 0.7/0.3
+    if (position.x && position.y) {
+      velocity.x = velocity.x * 0.7 + (mouseX - position.x) * 0.3;
+      velocity.y = velocity.y * 0.7 + (mouseY - position.y) * 0.3;
     }
 
-    p.x = mouseX;
-    p.y = mouseY;
+    position.x = mouseX;
+    position.y = mouseY;
 
     // find velocity magnitude
-    vd = Math.sqrt(v.x * v.x + v.y * v.y);
-    vd < 0.1 && ((v.x = 0), (v.y = 0));
+    mouseMagnitude = getMagnitude(velocity);
+    if (mouseMagnitude < 0.1) {
+      velocity.x = 0;
+      velocity.y = 0;
+      resetVelocity(velocity)
+    }
 
     // change radius according to velocity magnitude
-    a.effectiveSize = Math.sqrt(a.size * vd + 1);
+    a.effectiveSize = Math.sqrt(a.size * mouseMagnitude + 1);
 
-    // assign anticipator coordinates according to new velocity values and smoothen it with ratio 0.7/0.3
-    a.center.x = a.center.x * 0.7 + (p.x + v.x * t) * 0.3;
-    a.center.x < 0 && (a.center.x = 0);
-    a.center.x > window.innerWidth - a.effectiveSize &&
-      (a.center.x = window.innerWidth - a.effectiveSize);
+    /*
+      assign anticipator coordinates according to new velocity values
+      and smoothen it with ratio 0.7/0.3
+    */
+    a.center.x =
+      a.center.x * 0.7 + (position.x + velocity.x * avgDeltaTime) * 0.3;
+    if (a.center.x < 0) {
+      a.center.x = 0;
+    }
+
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeigh;
+
+    // if (a.center.x > windowWidth - a.effectiveSize)
+    //   a.center.x = windowWidth - a.effectiveSize;
+    a.center.x = Math.min(a.center.x, windowWidth - a.effectiveSize);
 
     a.rect.x0 = a.center.x - a.effectiveSize;
     a.rect.x1 = a.center.x + a.effectiveSize;
 
-    a.center.y = a.center.y * 0.7 + (p.y + v.y * t) * 0.3;
-    a.center.y < 0 && (a.center.y = 0);
-    a.center.y > window.innerHeight - a.effectiveSize &&
-      (a.center.y = window.innerHeight - a.effectiveSize);
+    a.center.y =
+      a.center.y * 0.7 + (position.y + velocity.y * avgDeltaTime) * 0.3;
+
+    a.center.y = Math.max(0, a.center.y);
+    // if (a.center.y < 0)
+    //   a.center.y = 0;
+
+    if (a.center.y > windowHeight - a.effectiveSize) {
+      a.center.y = windowHeight - a.effectiveSize;
+    }
 
     a.rect.y0 = a.center.y - a.effectiveSize;
     a.rect.y1 = a.center.y + a.effectiveSize;
   }
 
-  $.fn.aim = function(opts) {
+  $.fn.aim = function(options) {
     // Initialize menu-aim for all elements in jQuery collection
     this.each(function() {
-      init.call(this, opts);
+      init.call(this, options);
     });
 
     return this;
@@ -100,18 +128,18 @@
 
   $.aim = {};
 
-  $.aim.setDebug = function(val) {
-    let debugElement = document.querySelector('#jquery-aim-debug');
+  $.aim.setDebug = function(isDebugEnabled) {
+    let debugElement = document.querySelector('#aim-debug');
 
-    if (val) {
+    if (isDebugEnabled) {
       if (debugElement) return;
 
-      anticipator.elem = createDebugObject();
+      anticipator.elem = $(createDebugObject());
     } else {
       debugElement && debugElement.remove();
       anticipator.elem = null;
     }
-    DEBUG = val;
+    DEBUG = isDebugEnabled;
   };
 
   $.aim.setAnticipateFunction = function(func) {
@@ -156,26 +184,18 @@
    * @returns {Object}
    */
   function createDebugObject() {
-    var s = anticipator.size;
-    var elem = $('<div>')
-      .attr({
-        id: 'jquery-aim-debug',
-      })
-      .css({
-        width: 2 * s + 'px',
-        height: 2 * s + 'px',
-        'margin-left': -s + 'px',
-        'margin-top': -s + 'px',
-        top: 0,
-        left: 0,
-        border: '2px solid #333',
-        opacity: 0.3,
-        'background-color': 'yellowgreen',
-        position: 'absolute',
-        'pointer-events': 'none',
-      })
-      .appendTo($('body'));
-    return elem;
+    var size = anticipator.size;
+    let element = document.createElement('div');
+    element.setAttribute('id', 'aim-debug');
+    element.className = 'aim-debug';
+    element.style.width = 2 * size + 'px';
+    element.style.height = 2 * size + 'px';
+    element.style['margin-left'] = -size + 'px';
+    element.style['margin-top'] = -size + 'px';
+
+    document.body.appendChild(element);
+
+    return element;
   }
 
   /*
@@ -216,8 +236,9 @@
     function() {
       document.addEventListener(
         'mousemove',
-        function(e) {
-          (mouseX = e.clientX), (mouseY = e.clientY);
+        e => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
         },
         false
       );
@@ -225,14 +246,14 @@
     false
   );
 
-  let timer = setInterval(function() {
+  let timer = setInterval(() => {
     var a = anticipator;
 
     if (!elementList.length) return;
 
-    anticipateFunc(p, v, mouseX, mouseY, a);
+    anticipateFunc(mousePosition, mouseVelocity, mouseX, mouseY, a);
 
-    var prop =
+    let prop =
       'translate(' +
       a.center.x +
       'px,' +
@@ -258,21 +279,21 @@
      * if it's less than or equal to 0, aimExit function will be called
      */
 
-    elementList.forEach(target => {
-      var data = target.data('aim-data');
+    elementList.forEach($target => {
+      let data = $target.data('aim-data');
 
-      var isctRat = intersectRatio(data.rect, a.rect);
+      let intersectRatioValue = intersectRatio(data.rect, a.rect);
 
-      //check if they intersects and mouse is not on the element
-      if (isctRat && vd !== 0) {
-        data.increment = data.increment + isctRat * 0.2;
+      // check if they intersects and mouse is not on the element
+      if (intersectRatioValue && mouseMagnitude !== 0) {
+        data.increment = data.increment + intersectRatioValue * 0.2;
         if (data.increment > 1 && data.increment < 2) {
-          if (data.options.className) target.addClass(data.options.className);
+          if (data.options.className) $target.addClass(data.options.className);
           else if (
             data.options.aimEnter &&
             typeof data.options.aimEnter === 'function'
           )
-            data.options.aimEnter.call(target, true);
+            data.options.aimEnter.call($target, true);
 
           if (data.increment > 2) {
             data.increment = 2;
@@ -292,19 +313,14 @@
         if (data.increment < 0) {
           data.increment = 0;
           if (data.options.className)
-            target.removeClass(data.options.className);
+            $target.removeClass(data.options.className);
           else if (
             data.options.aimExit &&
             typeof data.options.aimExit === 'function'
           )
-            data.options.aimExit.call(target, true);
+            data.options.aimExit.call($target, true);
         }
       }
-    })
-
-    for (var i = 0; i < elementList.length; i++) {
-      var target = elementList[i];
-
-    }
+    });
   }, 16); //~60 FPS
 })(jQuery);

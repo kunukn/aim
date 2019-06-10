@@ -24,7 +24,7 @@
                     <input
                       id="input-debug"
                       type="checkbox"
-                      onclick="  $.aim.setDebug($(this).prop('checked'))"
+                      onclick="$.aim.setDebug($(this).prop('checked'))"
                     />
                     Toggle debug mode
                   </label>
@@ -94,7 +94,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../jquery.aim.js"></script>
     <script>
-      (function() {
+      (() => {
         document.querySelector('#input-debug').click();
 
         $('#target1').aim({
