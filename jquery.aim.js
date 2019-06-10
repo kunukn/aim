@@ -12,6 +12,11 @@
    * anRad Radius (or size) of the anticipator, increases as mouse move faster
    */
 
+  let constrain = (value, min, max) => {
+    if (value > max) value = max;
+    else if (value < min) value = min;
+  };
+
   let getMagnitude = v => Math.sqrt(v.x * v.x + v.y * v.y);
   let resetVelocity = v => {
     v.x = 0;
@@ -54,7 +59,7 @@
   function anticipateFunc(position, velocity, mouseX, mouseY, anticipator) {
     let a = anticipator;
 
-    // smoothen velocity values with ratio 0.7/0.3
+    // smoothen velocity values with ratio 0.7 / 0.3
     if (position.x && position.y) {
       velocity.x = velocity.x * 0.7 + (mouseX - position.x) * 0.3;
       velocity.y = velocity.y * 0.7 + (mouseY - position.y) * 0.3;
@@ -66,9 +71,7 @@
     // find velocity magnitude
     mouseMagnitude = getMagnitude(velocity);
     if (mouseMagnitude < 0.1) {
-      velocity.x = 0;
-      velocity.y = 0;
-      resetVelocity(velocity)
+      resetVelocity(velocity);
     }
 
     // change radius according to velocity magnitude
@@ -80,16 +83,16 @@
     */
     a.center.x =
       a.center.x * 0.7 + (position.x + velocity.x * avgDeltaTime) * 0.3;
-    if (a.center.x < 0) {
-      a.center.x = 0;
-    }
 
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeigh;
 
+    constrain(a.center.x, 0, windowWidth - a.effectiveSize);
+
+    // if (a.center.x < 0) a.center.x = 0;
     // if (a.center.x > windowWidth - a.effectiveSize)
     //   a.center.x = windowWidth - a.effectiveSize;
-    a.center.x = Math.min(a.center.x, windowWidth - a.effectiveSize);
+    //a.center.x = Math.min(a.center.x, windowWidth - a.effectiveSize);
 
     a.rect.x0 = a.center.x - a.effectiveSize;
     a.rect.x1 = a.center.x + a.effectiveSize;
@@ -97,13 +100,10 @@
     a.center.y =
       a.center.y * 0.7 + (position.y + velocity.y * avgDeltaTime) * 0.3;
 
-    a.center.y = Math.max(0, a.center.y);
-    // if (a.center.y < 0)
-    //   a.center.y = 0;
-
-    if (a.center.y > windowHeight - a.effectiveSize) {
-      a.center.y = windowHeight - a.effectiveSize;
-    }
+    constrain(a.center.y, 0, windowHeight - a.effectiveSize);
+    // if (a.center.y < 0) a.center.y = 0;
+    // if (a.center.y > windowHeight - a.effectiveSize)
+    //   a.center.y = windowHeight - a.effectiveSize;
 
     a.rect.y0 = a.center.y - a.effectiveSize;
     a.rect.y1 = a.center.y + a.effectiveSize;
@@ -156,14 +156,14 @@
    */
 
   function addProperties($elem) {
-    var percent = 0.25;
-    var w = $elem.outerWidth();
-    var h = $elem.outerHeight();
-    var x = $elem.offset().left;
-    var y = $elem.offset().top;
+    //let percent = 0.25;
+    let w = $elem.outerWidth();
+    let h = $elem.outerHeight();
+    let x = $elem.offset().left;
+    let y = $elem.offset().top;
 
-    var max = Math.sqrt(w * w + h * h);
-    var r = (max / 2) * (1 + percent);
+    //let max = Math.sqrt(w * w + h * h);
+    //var r = (max / 2) * (1 + percent);
 
     $elem.data('aim-data', {
       rect: {
@@ -172,7 +172,7 @@
         x1: x + w,
         y1: y + h,
       },
-      center: { x: x, y: y },
+      center: { x, y },
       increment: 0,
     });
   }
