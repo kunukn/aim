@@ -1,7 +1,7 @@
-jquery.aim
+aim
 ==========
 
-jQuery plugin anticipates on which element user is going to hover/click.
+a library that anticipates on which element user is going to hover/click.
 
 ![test](img/demo.gif "lorem")
 
