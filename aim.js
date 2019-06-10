@@ -1,5 +1,7 @@
 (function($) {
-  let elementList = [];
+  function aim() {}
+
+  let items = [];
   /**
    * mouseVelocity Velocity of the mouse pointer
    * mouseMagnitude Magnitude of velocity
@@ -18,7 +20,7 @@
   };
 
   let getMagnitude = v => Math.sqrt(v.x * v.x + v.y * v.y);
-  let resetVelocity = v => {
+  let zeroVelocity = v => {
     v.x = 0;
     v.y = 0;
   };
@@ -68,10 +70,9 @@
     position.x = mouseX;
     position.y = mouseY;
 
-    // find velocity magnitude
     mouseMagnitude = getMagnitude(velocity);
     if (mouseMagnitude < 0.1) {
-      resetVelocity(velocity);
+      zeroVelocity(velocity);
     }
 
     // change radius according to velocity magnitude
@@ -79,7 +80,7 @@
 
     /*
       assign anticipator coordinates according to new velocity values
-      and smoothen it with ratio 0.7/0.3
+      and smoothen it with ratio 0.7 / 0.3
     */
     a.center.x =
       a.center.x * 0.7 + (position.x + velocity.x * avgDeltaTime) * 0.3;
@@ -88,11 +89,9 @@
     const windowHeight = window.innerHeigh;
 
     constrain(a.center.x, 0, windowWidth - a.effectiveSize);
-
     // if (a.center.x < 0) a.center.x = 0;
     // if (a.center.x > windowWidth - a.effectiveSize)
     //   a.center.x = windowWidth - a.effectiveSize;
-    //a.center.x = Math.min(a.center.x, windowWidth - a.effectiveSize);
 
     a.rect.x0 = a.center.x - a.effectiveSize;
     a.rect.x1 = a.center.x + a.effectiveSize;
@@ -110,7 +109,7 @@
   }
 
   $.fn.aim = function(options) {
-    // Initialize menu-aim for all elements in jQuery collection
+    // Initialize menu-aim for all elements in collection
     this.each(function() {
       init.call(this, options);
     });
@@ -155,13 +154,15 @@
    * @returns {undefined} none
    */
 
-  function addProperties($elem) {
-    //let percent = 0.25;
-    let w = $elem.outerWidth();
-    let h = $elem.outerHeight();
-    let x = $elem.offset().left;
-    let y = $elem.offset().top;
+  function addProperties(elem) {
+    let $elem = $(elem);
+    let rect = elem.getBoundingClientRect();
+    let w = rect.width; //$elem.outerWidth();
+    let h = rect.height; //$elem.outerHeight();
+    let x = rect.x; //$elem.offset().left;
+    let y = rect.y; //$elem.offset().top;
 
+    //let percent = 0.25;
     //let max = Math.sqrt(w * w + h * h);
     //var r = (max / 2) * (1 + percent);
 
@@ -224,10 +225,22 @@
 
   function init(options) {
     let $this = $(this);
-    if ($.inArray($this, elementList) > -1) return;
+    let duplicate = false;
+    console.log(this, options);
+    items.forEach(item => {
+      if (item.element === this) {
+        console.warn('init duplicate');
+        duplicate = true;
+        return;
+      }
+    });
 
-    elementList.push($this);
-    addProperties($this);
+    duplicate && console.error('init duplicate');
+
+    if ($.inArray($this, items) > -1) return;
+
+    items.push({ element: this, $element: $this, options });
+    addProperties(this);
     $this.data('aim-data').options = options;
   }
 
@@ -249,26 +262,17 @@
   let tick = () => {
     let a = anticipator;
 
-    if (!elementList.length) return;
+    if (!items.length) return;
 
     anticipateFunc(mousePosition, mouseVelocity, mouseX, mouseY, a);
 
-    let prop =
-      'translate(' +
-      a.center.x +
-      'px,' +
-      a.center.y +
-      'px) scale(' +
-      a.effectiveSize / a.size +
-      ')';
+    let prop = `translate(${a.center.x}px, ${
+      a.center.y
+    }px) scale(${a.effectiveSize / a.size})`;
 
     DEBUG &&
       a.elem.css({
         transform: prop,
-        /*width: tbRad * 2,
-                     height: tbRad * 2,
-                     marginLeft: -tbRad + 'px',
-                     marginTop: -tbRad + 'px'*/
       });
 
     /*
@@ -279,7 +283,8 @@
      * if it's less than or equal to 0, aimExit function will be called
      */
 
-    elementList.forEach($target => {
+    items.forEach(item => {
+      let $target = item.$element;
       let data = $target.data('aim-data');
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
@@ -295,9 +300,8 @@
           )
             data.options.aimEnter.call($target, true);
 
-          if (data.increment > 2) {
-            data.increment = 2;
-          }
+          if (data.increment > 2) data.increment = 2;
+
           DEBUG && a.elem.css('background-color', 'tomato');
         } else if (data.increment > 2) {
           data.increment = 2;
@@ -335,5 +339,12 @@
     }
   };
 
-  run();
+  aim.start = () => {
+    isRunning = true;
+    run();
+  };
+  aim.stop = () => {
+    isRunning = false;
+  };
+  window.aim = aim;
 })(jQuery);

@@ -92,7 +92,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="../jquery.aim.js"></script>
+    <script src="../aim.js"></script>
     <script>
       (() => {
         document.querySelector('#input-debug').click();
@@ -108,6 +108,12 @@
         });
       })();
     </script>
-    <div class="temp"></div>
+    <script>
+      window.aim.start();
+
+      setTimeout(() => {
+        //window.aim.stop();
+      }, 100);
+    </script>
   </body>
 </html>
