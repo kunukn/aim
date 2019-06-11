@@ -254,13 +254,6 @@ var aim = (function($) {
     $this.data('aim-data').options = options;
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-  });
-
   let tick = () => {
     let a = anticipator;
 
@@ -348,6 +341,11 @@ var aim = (function($) {
   aim.stop = () => {
     isRunning = false;
   };
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
 
   return aim;
 })(jQuery);
