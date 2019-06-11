@@ -1,4 +1,7 @@
-var aim = (function($) {
+var aim = (() => {
+  // TODO remove jQuery dependency
+  let $ = jQuery;
+
   function aim(element, options) {
     init.call(element, options);
   }
@@ -75,7 +78,7 @@ var aim = (function($) {
       velocity.y = 0;
     }
 
-    // change radius according to velocity magnitude
+    // change radius according to magnitude
     a.effectiveSize = Math.sqrt(a.size * mouseMagnitude + 1);
 
     /*
@@ -85,13 +88,10 @@ var aim = (function($) {
     a.center.x =
       a.center.x * 0.7 + (position.x + velocity.x * avgDeltaTime) * 0.3;
 
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeigh;
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeigh;
 
     constrain(a.center.x, 0, windowWidth - a.effectiveSize);
-    // if (a.center.x < 0) a.center.x = 0;
-    // if (a.center.x > windowWidth - a.effectiveSize)
-    //   a.center.x = windowWidth - a.effectiveSize;
 
     a.rect.x0 = a.center.x - a.effectiveSize;
     a.rect.x1 = a.center.x + a.effectiveSize;
@@ -100,9 +100,6 @@ var aim = (function($) {
       a.center.y * 0.7 + (position.y + velocity.y * avgDeltaTime) * 0.3;
 
     constrain(a.center.y, 0, windowHeight - a.effectiveSize);
-    // if (a.center.y < 0) a.center.y = 0;
-    // if (a.center.y > windowHeight - a.effectiveSize)
-    //   a.center.y = windowHeight - a.effectiveSize;
 
     a.rect.y0 = a.center.y - a.effectiveSize;
     a.rect.y1 = a.center.y + a.effectiveSize;
@@ -134,14 +131,12 @@ var aim = (function($) {
       if (debugElement) return;
 
       let debugObject = createDebugObject();
-      anticipator.elem = $(debugObject);
-      anticipator.debugElement = debugObject;
-      anticipator.$debugElement = $(debugObject);
+      anticipator.$elem = $(debugObject);
+      anticipator.element = debugObject;
     } else {
       debugElement && debugElement.remove();
-      anticipator.elem = null;
-      anticipator.debugElement = null;
-      anticipator.$debugElement = null;
+      anticipator.$elem = null;
+      anticipator.element = null;
     }
     DEBUG = isDebugEnabled;
   }
@@ -156,6 +151,7 @@ var aim = (function($) {
   }
 
   $.aim.setAnticipateFunction = setAnticipateFunction;
+  aim.setAnticipateFunction = setAnticipateFunction;
 
   /*
    * Adds properties with jquery `.data()` function so each time it doesn't recalculate every property
@@ -250,12 +246,11 @@ var aim = (function($) {
   }
 
   function init(options) {
-    let $this = $(this);
+    let $this = $(this); // TODO
     let duplicate = false;
-    //console.log(this, options);
     items.forEach(item => {
       if (item.element === this) {
-        console.warn('init duplicate');
+        console.warn('init duplicate', this);
         duplicate = true;
         return;
       }
@@ -263,11 +258,10 @@ var aim = (function($) {
 
     if (duplicate) return;
 
-    //    if ($.inArray($this, items) > -1) return;
-
-    addProperties(this);
-    items.push({ element: this, $element: $this, options });
-    $this.data('aim-data').options = options;
+    addProperties(this); // TODO
+    let properties = getProperties(this);
+    items.push({ element: this, $element: $this, options, properties });
+    $this.data('aim-data').options = options; // TODO
   }
 
   let tick = () => {
@@ -277,14 +271,11 @@ var aim = (function($) {
 
     anticipateFunc(mousePosition, mouseVelocity, mouseX, mouseY, a);
 
-    let prop = `translate(${a.center.x}px, ${
-      a.center.y
-    }px) scale(${a.effectiveSize / a.size})`;
-
-    DEBUG &&
-      a.elem.css({
-        transform: prop,
-      });
+    if (DEBUG) {
+      a.element.style.transform = `translate(${a.center.x}px, ${
+        a.center.y
+      }px) scale(${a.effectiveSize / a.size})`;
+    }
 
     /*
      * Iterate over each elements and calculate increment for all
@@ -314,14 +305,14 @@ var aim = (function($) {
 
           if (data.increment > 2) data.increment = 2;
 
-          DEBUG && a.elem.css('background-color', 'tomato');
+          if (DEBUG) a.element.style['background-color'] = 'tomato';
         } else if (data.increment > 2) {
           data.increment = 2;
-          DEBUG && a.elem.css('background-color', 'tomato');
+          if (DEBUG) a.element.style['background-color'] = 'tomato';
         }
         return;
       } else {
-        DEBUG && a.elem.css('background-color', 'yellowgreen');
+        if (DEBUG) a.element.style['background-color'] = 'yellowgreen';
       }
 
       if (data.increment !== 0) {
@@ -366,5 +357,9 @@ var aim = (function($) {
     document.removeEventListener('mousemove', onMouseMove);
   };
 
+  aim.updateElement = element => {
+    // TODO: find element in array and update getBoundingClientRect
+  };
+
   return aim;
-})(jQuery);
+})();
