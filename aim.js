@@ -1,5 +1,7 @@
-(function($) {
-  function aim() {}
+var aim = (function($) {
+  function aim(element, options) {
+    init.call(element, options);
+  }
 
   let items = [];
   /**
@@ -33,13 +35,13 @@
     anticipator = {
       size: 50,
       center: createVector(),
-      effectiveSize: 1
+      effectiveSize: 1,
     };
   anticipator.rect = {
     x0: 0,
     y0: 0,
     x1: anticipator.size,
-    y1: anticipator.size
+    y1: anticipator.size,
   };
 
   /*
@@ -125,8 +127,8 @@
 
   $.aim = {};
 
-  $.aim.setDebug = function(isDebugEnabled) {
-    let debugElement = document.querySelector("#aim-debug");
+  function setDebug(isDebugEnabled) {
+    let debugElement = document.querySelector('#aim-debug');
 
     if (isDebugEnabled) {
       if (debugElement) return;
@@ -142,13 +144,18 @@
       anticipator.$debugElement = null;
     }
     DEBUG = isDebugEnabled;
-  };
+  }
 
-  $.aim.setAnticipateFunction = function(func) {
-    if (typeof func === "function") {
+  $.aim.setDebug = setDebug;
+  aim.setDebug = setDebug;
+
+  function setAnticipateFunction(func) {
+    if (typeof func === 'function') {
       anticipateFunc = func;
     }
-  };
+  }
+
+  $.aim.setAnticipateFunction = setAnticipateFunction;
 
   /*
    * Adds properties with jquery `.data()` function so each time it doesn't recalculate every property
@@ -169,15 +176,15 @@
     //let max = Math.sqrt(w * w + h * h);
     //var r = (max / 2) * (1 + percent);
 
-    $elem.data("aim-data", {
+    $elem.data('aim-data', {
       rect: {
         x0: x,
         y0: y,
         x1: x + w,
-        y1: y + h
+        y1: y + h,
       },
       center: { x, y },
-      increment: 0
+      increment: 0,
     });
   }
 
@@ -189,13 +196,13 @@
    */
   function createDebugObject() {
     let size = anticipator.size;
-    let element = document.createElement("div");
-    element.setAttribute("id", "aim-debug");
-    element.className = "aim-debug";
-    element.style.width = 2 * size + "px";
-    element.style.height = 2 * size + "px";
-    element.style["margin-left"] = -size + "px";
-    element.style["margin-top"] = -size + "px";
+    let element = document.createElement('div');
+    element.setAttribute('id', 'aim-debug');
+    element.className = 'aim-debug';
+    element.style.width = 2 * size + 'px';
+    element.style.height = 2 * size + 'px';
+    element.style['margin-left'] = -size + 'px';
+    element.style['margin-top'] = -size + 'px';
 
     document.body.appendChild(element);
 
@@ -229,38 +236,30 @@
   function init(options) {
     let $this = $(this);
     let duplicate = false;
-    console.log(this, options);
+    //console.log(this, options);
     items.forEach(item => {
       if (item.element === this) {
-        console.warn("init duplicate");
+        console.warn('init duplicate');
         duplicate = true;
         return;
       }
     });
 
-    duplicate && console.error("init duplicate");
+    if (duplicate) return;
 
-    if ($.inArray($this, items) > -1) return;
+    //    if ($.inArray($this, items) > -1) return;
 
     items.push({ element: this, $element: $this, options });
     addProperties(this);
-    $this.data("aim-data").options = options;
+    $this.data('aim-data').options = options;
   }
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-      document.addEventListener(
-        "mousemove",
-        e => {
-          mouseX = e.clientX;
-          mouseY = e.clientY;
-        },
-        false
-      );
-    },
-    false
-  );
+  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+  });
 
   let tick = () => {
     let a = anticipator;
@@ -275,7 +274,7 @@
 
     DEBUG &&
       a.elem.css({
-        transform: prop
+        transform: prop,
       });
 
     /*
@@ -288,7 +287,7 @@
 
     items.forEach(item => {
       let $target = item.$element;
-      let data = $target.data("aim-data");
+      let data = $target.data('aim-data');
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
 
@@ -299,20 +298,20 @@
           if (data.options.className) $target.addClass(data.options.className);
           else if (
             data.options.aimEnter &&
-            typeof data.options.aimEnter === "function"
+            typeof data.options.aimEnter === 'function'
           )
             data.options.aimEnter.call($target, true);
 
           if (data.increment > 2) data.increment = 2;
 
-          DEBUG && a.elem.css("background-color", "tomato");
+          DEBUG && a.elem.css('background-color', 'tomato');
         } else if (data.increment > 2) {
           data.increment = 2;
-          DEBUG && a.elem.css("background-color", "tomato");
+          DEBUG && a.elem.css('background-color', 'tomato');
         }
         return;
       } else {
-        DEBUG && a.elem.css("background-color", "yellowgreen");
+        DEBUG && a.elem.css('background-color', 'yellowgreen');
       }
 
       if (data.increment !== 0) {
@@ -323,7 +322,7 @@
             $target.removeClass(data.options.className);
           else if (
             data.options.aimExit &&
-            typeof data.options.aimExit === "function"
+            typeof data.options.aimExit === 'function'
           )
             data.options.aimExit.call($target, true);
         }
@@ -349,5 +348,6 @@
   aim.stop = () => {
     isRunning = false;
   };
-  window.aim = aim;
+
+  return aim;
 })(jQuery);

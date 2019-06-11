@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>jQuery Aim Dropdown Example</title>
+    <title>Aim Dropdown Example</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale = 1" />
     <link
       rel="stylesheet"
-      type="text/css"
-      href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="main_container" class="container full-width">
@@ -24,7 +23,7 @@
                     <input
                       id="input-debug"
                       type="checkbox"
-                      onclick="$.aim.setDebug($(this).prop('checked'))"
+                      onclick="aim.setDebug($(this).prop('checked'))"
                     />
                     Toggle debug mode
                   </label>
@@ -97,15 +96,29 @@
       (() => {
         document.querySelector('#input-debug').click();
 
-        $('#target1').aim({
+        let target1 = document.querySelector('#target1');
+        let target2 = document.querySelector('#target2');
+
+        aim(target1, {
           className: 'open',
         });
 
-        $('#target2').aim({
+        aim(target2, {
           aimEnter: function() {
-            $(this).addClass('open');
+            this[0].classList.add('open');
+            //$(this).addClass('open');
           },
         });
+
+        // $('#target1').aim({
+        //   className: 'open',
+        // });
+
+        // $('#target2').aim({
+        //   aimEnter: function() {
+        //     $(this).addClass('open');
+        //   },
+        // });
       })();
     </script>
     <script>
