@@ -6,15 +6,16 @@
   "directories": {
     "example": "examples"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "browser-sync": "2.26.7"
+    "browser-sync": "2.26.7",
+    "rollup": "1.15.1"
   },
   "peerDependencies": {
-    "jquery": "3.4.1"
   },
-
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "browser-sync -w",
     "dev": "npm run start",
