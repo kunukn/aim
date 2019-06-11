@@ -188,6 +188,22 @@ var aim = (function($) {
     });
   }
 
+  function getProperties(element) {
+    let rect = element.getBoundingClientRect();
+    let { x, y, width, height } = rect;
+
+    return {
+      rect: {
+        x0: x,
+        y0: y,
+        x1: x + width,
+        y1: y + height,
+      },
+      center: { x, y },
+      increment: 0,
+    };
+  }
+
   /*
    * Creates a circle jquery object which is to be used to
    * show where the anticipator is at any time
@@ -249,8 +265,8 @@ var aim = (function($) {
 
     //    if ($.inArray($this, items) > -1) return;
 
-    items.push({ element: this, $element: $this, options });
     addProperties(this);
+    items.push({ element: this, $element: $this, options });
     $this.data('aim-data').options = options;
   }
 
@@ -280,6 +296,7 @@ var aim = (function($) {
 
     items.forEach(item => {
       let $target = item.$element;
+      let target = item.element;
       let data = $target.data('aim-data');
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
@@ -334,18 +351,20 @@ var aim = (function($) {
     }
   };
 
+  let onMouseMove = e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  };
+
   aim.start = () => {
+    document.addEventListener('mousemove', onMouseMove);
     isRunning = true;
     run();
   };
   aim.stop = () => {
     isRunning = false;
+    document.removeEventListener('mousemove', onMouseMove);
   };
-
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
 
   return aim;
 })(jQuery);
