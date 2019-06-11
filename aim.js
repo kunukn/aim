@@ -20,10 +20,7 @@
   };
 
   let getMagnitude = v => Math.sqrt(v.x * v.x + v.y * v.y);
-  let zeroVelocity = v => {
-    v.x = 0;
-    v.y = 0;
-  };
+
   let createVector = () => ({ x: 0, y: 0 });
 
   let mouseVelocity = createVector(),
@@ -36,13 +33,13 @@
     anticipator = {
       size: 50,
       center: createVector(),
-      effectiveSize: 1,
+      effectiveSize: 1
     };
   anticipator.rect = {
     x0: 0,
     y0: 0,
     x1: anticipator.size,
-    y1: anticipator.size,
+    y1: anticipator.size
   };
 
   /*
@@ -72,7 +69,8 @@
 
     mouseMagnitude = getMagnitude(velocity);
     if (mouseMagnitude < 0.1) {
-      zeroVelocity(velocity);
+      velocity.x = 0;
+      velocity.y = 0;
     }
 
     // change radius according to velocity magnitude
@@ -128,21 +126,26 @@
   $.aim = {};
 
   $.aim.setDebug = function(isDebugEnabled) {
-    let debugElement = document.querySelector('#aim-debug');
+    let debugElement = document.querySelector("#aim-debug");
 
     if (isDebugEnabled) {
       if (debugElement) return;
 
-      anticipator.elem = $(createDebugObject());
+      let debugObject = createDebugObject();
+      anticipator.elem = $(debugObject);
+      anticipator.debugElement = debugObject;
+      anticipator.$debugElement = $(debugObject);
     } else {
       debugElement && debugElement.remove();
       anticipator.elem = null;
+      anticipator.debugElement = null;
+      anticipator.$debugElement = null;
     }
     DEBUG = isDebugEnabled;
   };
 
   $.aim.setAnticipateFunction = function(func) {
-    if (typeof func === 'function') {
+    if (typeof func === "function") {
       anticipateFunc = func;
     }
   };
@@ -166,15 +169,15 @@
     //let max = Math.sqrt(w * w + h * h);
     //var r = (max / 2) * (1 + percent);
 
-    $elem.data('aim-data', {
+    $elem.data("aim-data", {
       rect: {
         x0: x,
         y0: y,
         x1: x + w,
-        y1: y + h,
+        y1: y + h
       },
       center: { x, y },
-      increment: 0,
+      increment: 0
     });
   }
 
@@ -186,13 +189,13 @@
    */
   function createDebugObject() {
     let size = anticipator.size;
-    let element = document.createElement('div');
-    element.setAttribute('id', 'aim-debug');
-    element.className = 'aim-debug';
-    element.style.width = 2 * size + 'px';
-    element.style.height = 2 * size + 'px';
-    element.style['margin-left'] = -size + 'px';
-    element.style['margin-top'] = -size + 'px';
+    let element = document.createElement("div");
+    element.setAttribute("id", "aim-debug");
+    element.className = "aim-debug";
+    element.style.width = 2 * size + "px";
+    element.style.height = 2 * size + "px";
+    element.style["margin-left"] = -size + "px";
+    element.style["margin-top"] = -size + "px";
 
     document.body.appendChild(element);
 
@@ -229,26 +232,26 @@
     console.log(this, options);
     items.forEach(item => {
       if (item.element === this) {
-        console.warn('init duplicate');
+        console.warn("init duplicate");
         duplicate = true;
         return;
       }
     });
 
-    duplicate && console.error('init duplicate');
+    duplicate && console.error("init duplicate");
 
     if ($.inArray($this, items) > -1) return;
 
     items.push({ element: this, $element: $this, options });
     addProperties(this);
-    $this.data('aim-data').options = options;
+    $this.data("aim-data").options = options;
   }
 
   document.addEventListener(
-    'DOMContentLoaded',
+    "DOMContentLoaded",
     function() {
       document.addEventListener(
-        'mousemove',
+        "mousemove",
         e => {
           mouseX = e.clientX;
           mouseY = e.clientY;
@@ -272,7 +275,7 @@
 
     DEBUG &&
       a.elem.css({
-        transform: prop,
+        transform: prop
       });
 
     /*
@@ -285,7 +288,7 @@
 
     items.forEach(item => {
       let $target = item.$element;
-      let data = $target.data('aim-data');
+      let data = $target.data("aim-data");
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
 
@@ -296,20 +299,20 @@
           if (data.options.className) $target.addClass(data.options.className);
           else if (
             data.options.aimEnter &&
-            typeof data.options.aimEnter === 'function'
+            typeof data.options.aimEnter === "function"
           )
             data.options.aimEnter.call($target, true);
 
           if (data.increment > 2) data.increment = 2;
 
-          DEBUG && a.elem.css('background-color', 'tomato');
+          DEBUG && a.elem.css("background-color", "tomato");
         } else if (data.increment > 2) {
           data.increment = 2;
-          DEBUG && a.elem.css('background-color', 'tomato');
+          DEBUG && a.elem.css("background-color", "tomato");
         }
         return;
       } else {
-        DEBUG && a.elem.css('background-color', 'yellowgreen');
+        DEBUG && a.elem.css("background-color", "yellowgreen");
       }
 
       if (data.increment !== 0) {
@@ -320,7 +323,7 @@
             $target.removeClass(data.options.className);
           else if (
             data.options.aimExit &&
-            typeof data.options.aimExit === 'function'
+            typeof data.options.aimExit === "function"
           )
             data.options.aimExit.call($target, true);
         }
