@@ -1,6 +1,6 @@
 # aim
 
-A library that anticipates on which element user is going to hover or click.
+A Vanilla JS library that anticipates on which element user is going to hover or click.
 
 ![test](img/demo.gif 'lorem')
 
@@ -13,8 +13,8 @@ A couple of examples can be found the [examples page](http://kunukn.github.io/ai
 Call the function on the elements to catch user aim and add a class which will be added or removed when aiming starts or ends
 
 ```javascript
-aim(document.querySelector('#my-element'){
-    className: 'open'
+aim(document.querySelector('#my-element'), {
+  className: 'open',
 });
 
 aim.start(); // start the aim library
@@ -23,14 +23,10 @@ aim.start(); // start the aim library
 If you want to execute a function on aim starts or ends, use the `aimEnter` and `aimExit` options
 
 ```javascript
+let menu = document.querySelector('#menu');
 aim(document.querySelector('#hamburger'), {
-  aimEnter: function() {
-    document.querySelector('#menu').style.display = 'block';
-  },
-
-  aimExit: function() {
-    document.querySelector('#menu').style.display = 'none';
-  },
+  aimEnter: () => (menu.style.display = 'block'),
+  aimExit: () => (menu.style.display = 'none')
 });
 
 aim.start();
@@ -78,5 +74,4 @@ aim.setAnticipateFunction(anticipateFunc);
 
 `aim.stop()` stop the library
 
-`aim.updatePosition(element)` Tell the library to update it's internal information of where the element is displayed.
-
+`aim.updatePosition(element)` Tell the library to update it's internal information of where the element is positioned.

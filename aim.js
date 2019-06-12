@@ -282,12 +282,21 @@ var aim = (() => {
     mouseY = e.clientY;
   };
 
+  let aimHasStarted = false;
+
   aim.start = () => {
+    if (aimHasStarted) return;
+
+    aimHasStarted = true;
     document.addEventListener('mousemove', onMouseMove);
     isRunning = true;
     run();
   };
   aim.stop = () => {
+    if (!aimHasStarted) return;
+
+    aimHasStarted = false;
+
     isRunning = false;
     document.removeEventListener('mousemove', onMouseMove);
   };
