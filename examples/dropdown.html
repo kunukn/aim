@@ -104,29 +104,17 @@
         });
 
         aim(target2, {
-          aimEnter: function() {
-            this[0].classList.add('open');
-            //$(this).addClass('open');
+          aimEnter: function(params) {
+            this.classList.add('open');
           },
         });
 
-        // $('#target1').aim({
-        //   className: 'open',
-        // });
+        aim.start();
 
-        // $('#target2').aim({
-        //   aimEnter: function() {
-        //     $(this).addClass('open');
-        //   },
-        // });
+        setTimeout(() => {
+          //aim.stop();
+        }, 100);
       })();
-    </script>
-    <script>
-      aim.start();
-
-      setTimeout(() => {
-        //aim.stop();
-      }, 100);
     </script>
   </body>
 </html>

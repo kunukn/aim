@@ -105,14 +105,14 @@ var aim = (() => {
     a.rect.y1 = a.center.y + a.effectiveSize;
   }
 
-  $.fn.aim = function(options) {
-    // Initialize menu-aim for all elements in collection
-    this.each(function() {
-      init.call(this, options);
-    });
+  // $.fn.aim = function(options) {
+  //   // Initialize menu-aim for all elements in collection
+  //   this.each(function() {
+  //     init.call(this, options);
+  //   });
 
-    return this;
-  };
+  //   return this;
+  // };
 
   /*
    * Sets debug mode to true or false. If debug mode is set to true, a circle showing the
@@ -131,11 +131,9 @@ var aim = (() => {
       if (debugElement) return;
 
       let debugObject = createDebugObject();
-      anticipator.$elem = $(debugObject);
       anticipator.element = debugObject;
     } else {
       debugElement && debugElement.remove();
-      anticipator.$elem = null;
       anticipator.element = null;
     }
     DEBUG = isDebugEnabled;
@@ -150,41 +148,9 @@ var aim = (() => {
     }
   }
 
-  $.aim.setAnticipateFunction = setAnticipateFunction;
   aim.setAnticipateFunction = setAnticipateFunction;
 
-  /*
-   * Adds properties with jquery `.data()` function so each time it doesn't recalculate every property
-   *
-   * @param {type} elem Jquery element to add properties
-   * @returns {undefined} none
-   */
-
-  function addProperties(elem) {
-    let $elem = $(elem);
-    let rect = elem.getBoundingClientRect();
-    let w = rect.width; //$elem.outerWidth();
-    let h = rect.height; //$elem.outerHeight();
-    let x = rect.x; //$elem.offset().left;
-    let y = rect.y; //$elem.offset().top;
-
-    //let percent = 0.25;
-    //let max = Math.sqrt(w * w + h * h);
-    //var r = (max / 2) * (1 + percent);
-
-    $elem.data('aim-data', {
-      rect: {
-        x0: x,
-        y0: y,
-        x1: x + w,
-        y1: y + h,
-      },
-      center: { x, y },
-      increment: 0,
-    });
-  }
-
-  function getProperties(element) {
+  function getData(element) {
     let rect = element.getBoundingClientRect();
     let { x, y, width, height } = rect;
 
@@ -246,7 +212,6 @@ var aim = (() => {
   }
 
   function init(options) {
-    let $this = $(this); // TODO
     let duplicate = false;
     items.forEach(item => {
       if (item.element === this) {
@@ -258,10 +223,9 @@ var aim = (() => {
 
     if (duplicate) return;
 
-    addProperties(this); // TODO
-    let properties = getProperties(this);
-    items.push({ element: this, $element: $this, options, properties });
-    $this.data('aim-data').options = options; // TODO
+    let data = getData(this);
+    data.options = options;
+    items.push({ element: this, data });
   }
 
   let tick = () => {
@@ -286,9 +250,8 @@ var aim = (() => {
      */
 
     items.forEach(item => {
-      let $target = item.$element;
       let target = item.element;
-      let data = $target.data('aim-data');
+      let data = item.data;
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
 
@@ -296,12 +259,10 @@ var aim = (() => {
       if (intersectRatioValue && mouseMagnitude !== 0) {
         data.increment = data.increment + intersectRatioValue * 0.2;
         if (data.increment > 1 && data.increment < 2) {
-          if (data.options.className) $target.addClass(data.options.className);
-          else if (
-            data.options.aimEnter &&
-            typeof data.options.aimEnter === 'function'
-          )
-            data.options.aimEnter.call($target, true);
+          data.options.className &&
+            target.classList.add(data.options.className);
+          if (typeof data.options.aimEnter === 'function')
+            data.options.aimEnter.call(target, {});
 
           if (data.increment > 2) data.increment = 2;
 
@@ -319,13 +280,10 @@ var aim = (() => {
         data.increment = data.increment - 0.05;
         if (data.increment < 0) {
           data.increment = 0;
-          if (data.options.className)
-            $target.removeClass(data.options.className);
-          else if (
-            data.options.aimExit &&
-            typeof data.options.aimExit === 'function'
-          )
-            data.options.aimExit.call($target, true);
+          data.options.className &&
+            target.classList.remove(data.options.className);
+          if (typeof data.options.aimExit === 'function')
+            data.options.aimExit.call(target, {});
         }
       }
     });
