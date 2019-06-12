@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "A library to make websites more usable by guessing which element is going to be hovered/clicked",
   "main": "aim.js",
+  "scripts": {
+    "start": "browser-sync -w",
+    "dev": "npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "directories": {
     "example": "examples"
   },
@@ -11,16 +16,10 @@
     "browser-sync": "2.26.7",
     "rollup": "1.15.1"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "files": [
     "dist"
   ],
-  "scripts": {
-    "start": "browser-sync -w",
-    "dev": "npm run start",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/kunukn/aim.git"
