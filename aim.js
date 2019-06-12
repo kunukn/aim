@@ -16,10 +16,6 @@ var aim = (() => {
    * anRad Radius (or size) of the anticipator, increases as mouse move faster
    */
 
-  let constrain = (value, min, max) => {
-    if (value > max) value = max;
-    else if (value < min) value = min;
-  };
   let clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
   let getMagnitude = v => Math.sqrt(v.x * v.x + v.y * v.y);
