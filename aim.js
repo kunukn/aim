@@ -11,7 +11,7 @@ var aim = (() => {
    * avgDeltaTime Average delta time for a simple calculation of new position, x = x0 +  v * t
    * mouseX the last retrived x coordinate of mouse cursor
    * mouseY the last retrived y coordinate of mouse cursor
-   * anticipator a jquery object to debug where mouse is aiming
+   * anticipator an object to debug where mouse is aiming
    * anticipator.size, anticipator.radius, anticipator.center, anticipator.rect anticipator related properties
    * anRad Radius (or size) of the anticipator, increases as mouse move faster
    */
@@ -144,7 +144,7 @@ var aim = (() => {
   };
 
   /*
-   * Creates a circle jquery object which is to be used to
+   * Creates a circle object which is to be used to
    * show where the anticipator is at any time
    *
    * @returns {Object}

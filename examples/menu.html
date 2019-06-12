@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>jQuery Aim Example Menu</title>
+    <title>Aim Example Menu</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale = 1.0" />
     <link
@@ -59,25 +59,24 @@
       </div>
     </div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../aim.js"></script>
     <script>
       (function() {
         document.querySelector('#input-debug').click();
 
-        $('#hamburger').aim({
+        let menu = document.querySelector('#menu');
+        aim(document.querySelector('#hamburger'), {
           aimEnter: function() {
-            $('#menu').show();
+            document.body.style.background = '#f5f5f5'
+            menu.style.display = 'block';
           },
           aimExit: function() {
-            $('#menu').hide();
+            document.body.style.background = ''
+            menu.style.display = '';
           },
         });
+
+        aim.start();
       })();
     </script>
   </body>
