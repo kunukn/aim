@@ -1,6 +1,4 @@
 var aim = (() => {
-  // TODO remove jQuery dependency
-  let $ = jQuery;
 
   function aim(element, options) {
     init.call(element, options);
@@ -105,25 +103,6 @@ var aim = (() => {
     a.rect.y1 = a.center.y + a.effectiveSize;
   }
 
-  // $.fn.aim = function(options) {
-  //   // Initialize menu-aim for all elements in collection
-  //   this.each(function() {
-  //     init.call(this, options);
-  //   });
-
-  //   return this;
-  // };
-
-  /*
-   * Sets debug mode to true or false. If debug mode is set to true, a circle showing the
-   * position and radius of anticipator will be created
-   *
-   * @param {type} val
-   * @returns {undefined}
-   */
-
-  $.aim = {};
-
   function setDebug(isDebugEnabled) {
     let debugElement = document.querySelector('#aim-debug');
 
@@ -139,7 +118,6 @@ var aim = (() => {
     DEBUG = isDebugEnabled;
   }
 
-  $.aim.setDebug = setDebug;
   aim.setDebug = setDebug;
 
   function setAnticipateFunction(func) {
