@@ -20,6 +20,7 @@ var aim = (() => {
     if (value > max) value = max;
     else if (value < min) value = min;
   };
+  let clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
   let getMagnitude = v => Math.sqrt(v.x * v.x + v.y * v.y);
 
@@ -88,7 +89,7 @@ var aim = (() => {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeigh;
 
-    constrain(a.center.x, 0, windowWidth - a.effectiveSize);
+    clamp(a.center.x, 0, windowWidth - a.effectiveSize);
 
     a.rect.x0 = a.center.x - a.effectiveSize;
     a.rect.x1 = a.center.x + a.effectiveSize;
@@ -96,7 +97,7 @@ var aim = (() => {
     a.center.y =
       a.center.y * 0.7 + (position.y + velocity.y * avgDeltaTime) * 0.3;
 
-    constrain(a.center.y, 0, windowHeight - a.effectiveSize);
+    clamp(a.center.y, 0, windowHeight - a.effectiveSize);
 
     a.rect.y0 = a.center.y - a.effectiveSize;
     a.rect.y1 = a.center.y + a.effectiveSize;
