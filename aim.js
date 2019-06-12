@@ -1,5 +1,4 @@
 var aim = (() => {
-
   function aim(element, options) {
     init.call(element, options);
   }
@@ -128,7 +127,7 @@ var aim = (() => {
 
   aim.setAnticipateFunction = setAnticipateFunction;
 
-  function getData(element) {
+  let getData = element => {
     let rect = element.getBoundingClientRect();
     let { x, y, width, height } = rect;
 
@@ -142,7 +141,7 @@ var aim = (() => {
       center: { x, y },
       increment: 0,
     };
-  }
+  };
 
   /*
    * Creates a circle jquery object which is to be used to
@@ -293,8 +292,16 @@ var aim = (() => {
     document.removeEventListener('mousemove', onMouseMove);
   };
 
-  aim.updateElement = element => {
-    // TODO: find element in array and update getBoundingClientRect
+  aim.updatePosition = element => {
+    items.forEach(item => {
+      if (item.element === element) {
+        let data = getData(element);
+        item.data.rect = data.rect;
+        item.data.center = data.center;
+        item.data.increment = data.increment;
+        return;
+      }
+    });
   };
 
   return aim;

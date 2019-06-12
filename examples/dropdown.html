@@ -23,7 +23,7 @@
                     <input
                       id="input-debug"
                       type="checkbox"
-                      onclick="aim.setDebug($(this).prop('checked'))"
+                      onclick="aim.setDebug(this.checked)"
                     />
                     Toggle debug mode
                   </label>
@@ -85,12 +85,6 @@
       </div>
     </div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../aim.js"></script>
     <script>
       (() => {
