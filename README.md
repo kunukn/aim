@@ -22,7 +22,7 @@ let id1 = aim({
 // Target by manual data
 let id2 = aim({
   target: {x: 0, y: 0, width: 200, height: 200},
-  className: 'open',
+  aimEnter: () => console.log('target activated'),
 });
 
 aim.start(); // start the aim library
@@ -34,8 +34,8 @@ If you want to execute a function on aim starts or ends, use the `aimEnter` and 
 let menu = document.querySelector('#menu');
 let id = aim({
   target: document.querySelector('#hamburger'),
-  aimEnter: () => (menu.style.display = 'block'),
-  aimExit: () => (menu.style.display = 'none')
+  aimEnter: () => {menu.style.display = 'block'},
+  aimExit: () => {menu.style.display = 'none'}
 });
 
 aim.start();
@@ -83,4 +83,6 @@ aim.setAnticipateFunction(anticipateFunc);
 
 `aim.stop()` stop the library
 
-`aim.updatePosition(element)` Tell the library to update it's internal information of where the element is positioned.
+`aim.remove(target)` remove the target. Target can either be a DOM element or an object with id `{id: 'the-given-id-when-the-target-was-added'}`.
+
+`aim.updatePosition(target)` Tell the library to update it's internal information of where the element is positioned. Target can either be a DOM element or an object with id.

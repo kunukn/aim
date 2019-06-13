@@ -2,10 +2,18 @@
   "name": "@kunukn/aim",
   "version": "0.0.1",
   "description": "A library to make websites more usable by guessing which element is going to be hovered/clicked",
-  "main": "aim.js",
+  "main": "dist/aim.umd.js",
+  "module": "dist/aim.es.js",
+  "main-es2015": "dist/aim.umd.es2015.js",
   "scripts": {
-    "start": "browser-sync -w",
-    "dev": "npm run start",
+    "start": "browser-sync start -s 'examples' -f 'examples' --port 3434",
+    "dev": "npm-run-all -p -r start build-watch",
+    "build-watch": "rollup -c -w rollup.config.js --environment ES5",
+    "clean": "rimraf dist/*.*",
+    "build-es5": "rollup -c rollup.config.js --environment ES5",
+    "build-es6": "rollup -c rollup.config.js --environment ES6",
+    "build-all": "yarn clean && yarn build-es5 && yarn build-es6",
+    "build": "yarn build-es5",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "directories": {
@@ -13,8 +21,25 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-plugin-module-resolver": "^3.2.0",
     "browser-sync": "2.26.7",
-    "rollup": "1.15.1"
+    "gzip-size": "^5.1.1",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.3",
+    "rollup": "1.15.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-copy": "^3.0.0",
+    "rollup-plugin-includepaths": "^0.2.3",
+    "rollup-plugin-node-resolve": "^5.0.2",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-strip": "^1.2.1",
+    "rollup-plugin-terser": "^5.0.0",
+    "rollup-plugin-url": "^2.2.2"
   },
   "peerDependencies": {},
   "files": [
