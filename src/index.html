@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Aim Dropdown Example</title>
+    <title>aim Dropdown Example</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale = 1" />
     <link
@@ -98,22 +98,11 @@
       let target2 = document.querySelector('#target2');
       let target3 = document.querySelector('#target3');
 
-      let id1 = aim({
-        target: target1,
+      let ids = aim({
+        target: '.target',
         className: 'open',
       });
 
-      let id2 = aim({
-        target: target2,
-        aimEnter: function(params) {
-          this.classList.add('open');
-          console.log(params);
-        },
-        aimExit: function(params) {
-          this.classList.remove('open');
-          console.log(params);
-        },
-      });
 
       let id3 = aim({
         target: { x: 0, y: 0, width: 200, height: 50 },

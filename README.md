@@ -18,6 +18,18 @@ A couple of examples can be found the [examples page](http://kunukn.github.io/ai
 
 ## Usage
 
+Call the function on the querySelectorAll elements to catch user aim and add a class which will be added or removed when aiming starts or ends.
+
+```javascript
+// Target by document.querySelectorAll query
+aim({
+  target: '.target',
+  className: 'open',
+});
+
+aim.start(); // start the aim library
+```
+
 Call the function on the element to catch user aim and add a class which will be added or removed when aiming starts or ends.
 
 ```javascript
@@ -35,13 +47,13 @@ Call the function on the object to catch user aim for that area.
 ```js
 // Target by manual data
 aim({
-  target: {x: 10, y: 10, width: 200, height: 200},
+  target: { x: 10, y: 10, width: 200, height: 200 },
   aimEnter: () => console.log('target enter'),
 });
 
-// Target by manual data
+// Target by manual data, full width example
 aim({
-  target: {y: 10, width: '100%', height: 200},
+  target: { y: 10, width: '100%', height: 200 },
   aimEnter: () => console.log('target enter'),
 });
 
@@ -53,9 +65,13 @@ If you want to execute a function on aim starts or ends, use the `aimEnter` and 
 ```javascript
 let menu = document.querySelector('#menu');
 let id = aim({
-  target: document.querySelector('#hamburger'),
-  aimEnter: () => {menu.style.display = 'block'},
-  aimExit: () => {menu.style.display = 'none'}
+  target: '#hamburger',
+  aimEnter: () => {
+    menu.style.display = 'block';
+  },
+  aimExit: () => {
+    menu.style.display = 'none';
+  },
 });
 
 aim.start();
@@ -106,3 +122,20 @@ aim.setAnticipateFunction(anticipateFunc);
 `aim.remove(target)` remove the target. Target can either be a DOM element or an object with id `{id: 'the-given-id-when-the-target-was-added'}`.
 
 `aim.updatePosition(target)` Tell the library to update it's internal information of where the element is positioned. Target can either be a DOM element or an object with id.
+
+## Development
+
+* git clone the project
+* yarn install
+
+### start dev mode
+
+`yarn dev`
+
+### smoke test the compiled library
+
+`yarn start`
+
+### build
+
+`yarn build`
