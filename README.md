@@ -4,6 +4,10 @@ A Vanilla JS library that anticipates on which element user is going to hover or
 
 ![test](img/demo.gif 'lorem')
 
+## Size
+
+UMD minified 3.82kb, gzipped 1.50kb
+
 ## Examples
 
 A couple of examples can be found the [examples page](http://kunukn.github.io/aim/examples/index.html)

@@ -238,10 +238,10 @@ let tick = () => {
     if (intersectRatioValue && pointerMagnitude !== 0) {
       data.increment = data.increment + intersectRatioValue * 0.2;
       if (data.increment > 1 && data.increment < 2) {
-        if (data.options.className)
+        if (data.options.className && target instanceof HTMLElement)
           target.classList.add(data.options.className);
         if (typeof data.options.aimEnter === "function")
-          data.options.aimEnter.call(target, {});
+          data.options.aimEnter.call(target, item);
 
         if (data.increment > 2) data.increment = 2;
 
@@ -259,10 +259,10 @@ let tick = () => {
       data.increment = data.increment - 0.05;
       if (data.increment < 0) {
         data.increment = 0;
-        data.options.className &&
+        if (data.options.className && target instanceof HTMLElement)
           target.classList.remove(data.options.className);
         if (typeof data.options.aimExit === "function")
-          data.options.aimExit.call(target, {});
+          data.options.aimExit.call(target, item);
       }
     }
   });
