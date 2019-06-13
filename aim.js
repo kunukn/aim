@@ -316,6 +316,8 @@ var aim = (() => {
         }
       });
     }
+    if (wasRemoved) items = items.filter(Boolean);
+
     return wasRemoved;
   };
 
