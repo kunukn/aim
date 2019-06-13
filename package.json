@@ -7,7 +7,8 @@
   "main-es2015": "dist/aim.umd.es2015.js",
   "scripts": {
     "start": "browser-sync start -s 'examples' -f 'examples' --port 3434",
-    "dev": "npm-run-all -p -r start build-watch",
+    "dev": "browser-sync start -s 'src' -f 'src' --port 3535",
+    "dev2": "npm-run-all -p -r start build-watch",
     "build-watch": "rollup -c -w rollup.config.js --environment ES5",
     "clean": "rimraf dist/*.*",
     "build-es5": "rollup -c rollup.config.js --environment ES5",

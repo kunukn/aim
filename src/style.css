@@ -1,0 +1,65 @@
+body {
+  transition: background-color 300ms;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.buffer-top {
+  margin-top: 15px;
+}
+
+.navbar-toggle .icon-bar {
+  background-color: dodgerblue;
+}
+
+.navbar-toggle {
+  display: block;
+}
+
+#menu {
+  display: none;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.3s;
+  transform: translateY(-60px);
+}
+
+header.shown {
+  transform: translateY(0);
+}
+
+.fixed-box{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 50px;
+  background: #eee;
+  padding: 10px;
+  transition: 300ms;
+}
+.fixed-box.active{
+  background: #ccc;
+}
+
+
+.aim-debug {
+  width: 100;
+  height: 100;
+  margin-left: -50px;
+  margin-top: -50px;
+  top: 0;
+  left: 0;
+  border: 2px solid #333;
+  opacity: 0.3;
+  background-color: yellowgreen;
+  position: fixed;
+  pointer-events: none;
+}

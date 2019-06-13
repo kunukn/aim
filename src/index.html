@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aim Dropdown Example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale = 1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="main_container" class="container full-width">
+      <div class="navbar"></div>
+      <div class="row">
+        <div class="col-xs-offset-2 col-xs-8">
+          <div class="row buffer-top">
+            <div class="panel panel-primary">
+              <div class="panel-body text-center">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      id="input-debug"
+                      type="checkbox"
+                      onclick="aim.setDebug(this.checked)"
+                    />
+                    Toggle debug mode
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-2 col-xs-offset-2">
+              <div id="target1" class="btn-group text-center">
+                <button
+                  id="btnGroupDrop1"
+                  type="button"
+                  class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  Self Closing
+                  <span class="caret"></span>
+                </button>
+                <ul
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="btnGroupDrop1"
+                >
+                  <li><a href="#">Rename</a></li>
+                  <li><a href="#">Add</a></li>
+                  <li><a href="#">Copy</a></li>
+                  <li><a href="#">Delete</a></li>
+                  <li><a href="#">More</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xs-2 col-xs-offset-5">
+              <div id="target2" class="btn-group text-center">
+                <button
+                  id="btnGroupDrop2"
+                  type="button"
+                  class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  Self Closing
+                  <span class="caret"></span>
+                </button>
+                <ul
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="btnGroupDrop1"
+                >
+                  <li><a href="#">Rename</a></li>
+                  <li><a href="#">Add</a></li>
+                  <li><a href="#">Copy</a></li>
+                  <li><a href="#">More</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="target3" class="fixed-box">fixed box</div>
+
+    <script type="module">
+      import aim from './aim.js';
+
+      window.aim = aim;
+
+      document.querySelector('#input-debug').click();
+
+      let target1 = document.querySelector('#target1');
+      let target2 = document.querySelector('#target2');
+      let target3 = document.querySelector('#target3');
+
+      let id1 = aim({
+        target: target1,
+        className: 'open',
+      });
+
+      let id2 = aim({
+        target: target2,
+        aimEnter: function(params) {
+          this.classList.add('open');
+          console.log(params);
+        },
+        aimExit: function(params) {
+          this.classList.remove('open');
+          console.log(params);
+        },
+      });
+
+      let id3 = aim({
+        target: { x: 0, y: 0, width: 200, height: 50 },
+        aimEnter: params => {
+          console.log('enter ' + Date.now());
+          document.title = 'enter';
+        },
+        aimExit: params => {
+          console.log('exit ' + Date.now());
+          document.title = 'exit';
+        },
+      });
+
+      aim.start();
+    </script>
+
+  </body>
+</html>
