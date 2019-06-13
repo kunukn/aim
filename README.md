@@ -125,8 +125,9 @@ aim.setAnticipateFunction(anticipateFunc);
 
 ## Development
 
-* git clone the project
-* yarn install
+- git clone the project
+- yarn install
+- use a modern browser like Chrome or Firefox
 
 ### start dev mode
 
