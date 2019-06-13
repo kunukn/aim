@@ -1,6 +1,6 @@
 var aim = (() => {
-  function aim(element, options) {
-    init.call(element, options);
+  function aim(options) {
+    init.call(options.target, options);
   }
 
   let items = [];
@@ -186,6 +186,7 @@ var aim = (() => {
   }
 
   function init(options) {
+
     let duplicate = false;
     items.forEach(item => {
       if (item.element === this) {

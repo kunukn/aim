@@ -93,11 +93,13 @@
         let target1 = document.querySelector('#target1');
         let target2 = document.querySelector('#target2');
 
-        aim(target1, {
+        aim({
+          target: target1,
           className: 'open',
         });
 
-        aim(target2, {
+        aim({
+          target: target2,
           aimEnter: function(params) {
             this.classList.add('open');
           },

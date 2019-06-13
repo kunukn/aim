@@ -65,7 +65,8 @@
         document.querySelector('#input-debug').click();
 
         let menu = document.querySelector('#menu');
-        aim(document.querySelector('#hamburger'), {
+        aim({
+          target: document.querySelector('#hamburger'),
           aimEnter: function() {
             document.body.style.background = '#f5f5f5'
             menu.style.display = 'block';
