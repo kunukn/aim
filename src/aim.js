@@ -130,7 +130,7 @@ function anticipateFunc(position, velocity, pointerX, pointerY, anticipator) {
 }
 
 function setDebug(isDebugEnabled) {
-  let debugElement = document.querySelector('#aim-debug');
+  let debugElement = document.querySelector('#__aim-debug');
 
   if (isDebugEnabled) {
     if (debugElement) return;
@@ -192,8 +192,7 @@ let getData = target => {
 function createDebugObject() {
   let size = anticipator.size;
   let element = document.createElement('div');
-  element.setAttribute('id', 'aim-debug');
-  element.className = 'aim-debug';
+  element.setAttribute('id', '__aim-debug');
   element.style.width = 2 * size + 'px';
   element.style.height = 2 * size + 'px';
   element.style['margin-left'] = -size + 'px';
@@ -262,27 +261,34 @@ let tick = () => {
 
     // check if they intersects and pointer is not on the element
     if (intersectRatioValue && pointerMagnitude !== 0) {
-      data.increment = data.increment + intersectRatioValue * 0.2;
-      if (data.increment > 1 && data.increment < 2) {
+      data.increment += intersectRatioValue * 0.2;
+      if (1 > data.increment && data.increment < 2) {
         if (options.className && target instanceof HTMLElement)
           target.classList.add(options.className);
         if (typeof options.aimEnter === 'function')
           options.aimEnter.call(target, getParamsFromItem(item));
 
-        if (data.increment > 2) data.increment = 2;
-
-        if (DEBUG) a.element.style['background-color'] = 'tomato';
+        if (DEBUG) {
+          a.element.classList.add('__aim-debug--hit');
+        }
       } else if (data.increment > 2) {
         data.increment = 2;
-        if (DEBUG) a.element.style['background-color'] = 'tomato';
+        if (DEBUG) {
+          a.element.classList.add('__aim-debug--high');
+        }
       }
       return;
     } else {
-      if (DEBUG) a.element.style['background-color'] = 'yellowgreen';
+      if (DEBUG) {
+        setTimeout(() => {
+          a.element.classList.remove('__aim-debug--hit');
+          a.element.classList.remove('__aim-debug--high');
+        }, 0);
+      }
     }
 
     if (data.increment !== 0) {
-      data.increment = data.increment - 0.05;
+      data.increment -= 0.05;
       if (data.increment < 0) {
         data.increment = 0;
         if (options.className && target instanceof HTMLElement)
@@ -297,13 +303,8 @@ let tick = () => {
 
 let isRunning = true;
 let run = () => {
-  let token;
   tick();
-  if (isRunning) {
-    token = requestAnimationFrame(run);
-  } else {
-    cancelAnimationFrame(token);
-  }
+  if (isRunning) requestAnimationFrame(run);
 };
 
 let onPointerMove = e => {

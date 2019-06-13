@@ -15,22 +15,19 @@ UMD minified 4.59kb, gzipped minified 1.82kb
 
 https://s.codepen.io/kunukn/debug/690fb382ae6450c8bf14ad9909a60df2
 
-## Examples
-
-A couple of examples can be found the [examples page](http://kunukn.github.io/aim/examples/index.html)
 
 ## Usage
 
-Call the function on the querySelectorAll elements to catch user aim and add a class which will be added or removed when aiming starts or ends.
+Call the function on the `querySelectorAll string` to catch user aim and add a class which will be added or removed when aiming starts or ends.
 
 ```javascript
-// Target by document.querySelectorAll query
+// Target all elements who has a class name of target
 aim({
   target: '.target',
   className: 'open',
 });
 
-aim.start(); // start the aim library
+aim.start(); // start the aim library, you only need to run this once.
 ```
 
 Call the function on the element to catch user aim and add a class which will be added or removed when aiming starts or ends.
@@ -88,7 +85,28 @@ To see where your cursor is aiming and check if it intersects with elements use
 aim.setDebug(true);
 ```
 
-and you will see a rectangle moving around.
+You will need to add CSS for your debug object.
+
+```css
+#__aim-debug {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border: 2px solid #333;
+  opacity: 0.3;
+  background-color: yellowgreen;
+  pointer-events: none;
+}
+#__aim-debug.__aim-debug--high {
+  background-color: purple;
+}
+#__aim-debug.__aim-debug--hit {
+  background-color: tomato;
+}
+```
+
+Then you will see a rectangle moving around.
+
 
 ## Defining own function
 
