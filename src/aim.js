@@ -1,12 +1,36 @@
+let qsa = expr => [].slice.call(document.querySelectorAll(expr), 0);
+
 // https://stackoverflow.com/q/105034/815507
 let uuidv4 = () =>
-  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     let r = (Math.random() * 16) | 0;
-    return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
 
-function aim(options) {
-  return init(options);
+function aim(params) {
+  let { target } = params;
+  let options = { ...params };
+  delete options.target;
+
+  if (typeof target === 'string') {
+    let elems = qsa(target);
+    if (elems && elems.length) {
+      let ids = [];
+      elems.forEach(el => {
+        let id = uuidv4();
+        items.push({ id, target: el, data: getData(el), options });
+        ids.push(id);
+      });
+
+      if (elems.length === 1) return ids[0];
+
+      return ids;
+    }
+  }
+
+  let id = uuidv4();
+  items.push({ id, target, data: getData(target), options });
+  return id;
 }
 
 let items = [];
@@ -38,13 +62,13 @@ let pointerVelocity = createVector(),
   anticipator = {
     size: 50,
     center: createVector(),
-    effectiveSize: 1
+    effectiveSize: 1,
   };
 anticipator.rect = {
   x0: 0,
   y0: 0,
   x1: anticipator.size,
-  y1: anticipator.size
+  y1: anticipator.size,
 };
 
 /*
@@ -106,7 +130,7 @@ function anticipateFunc(position, velocity, pointerX, pointerY, anticipator) {
 }
 
 function setDebug(isDebugEnabled) {
-  let debugElement = document.querySelector("#aim-debug");
+  let debugElement = document.querySelector('#aim-debug');
 
   if (isDebugEnabled) {
     if (debugElement) return;
@@ -123,7 +147,7 @@ function setDebug(isDebugEnabled) {
 aim.setDebug = setDebug;
 
 function setAnticipateFunction(func) {
-  if (typeof func === "function") {
+  if (typeof func === 'function') {
     anticipateFunc = func;
   }
 }
@@ -138,15 +162,24 @@ let getData = target => {
 
   let { x, y, width, height } = rect || target;
 
+  if (width === '100%') {
+    x = 0;
+    width = window.innerWidth;
+  }
+  if (height === '100%') {
+    y = 0;
+    height = window.innerHeight;
+  }
+
   return {
     rect: {
       x0: x,
       y0: y,
       x1: x + width,
-      y1: y + height
+      y1: y + height,
     },
     center: { x, y },
-    increment: 0
+    increment: 0,
   };
 };
 
@@ -158,13 +191,13 @@ let getData = target => {
  */
 function createDebugObject() {
   let size = anticipator.size;
-  let element = document.createElement("div");
-  element.setAttribute("id", "aim-debug");
-  element.className = "aim-debug";
-  element.style.width = 2 * size + "px";
-  element.style.height = 2 * size + "px";
-  element.style["margin-left"] = -size + "px";
-  element.style["margin-top"] = -size + "px";
+  let element = document.createElement('div');
+  element.setAttribute('id', 'aim-debug');
+  element.className = 'aim-debug';
+  element.style.width = 2 * size + 'px';
+  element.style.height = 2 * size + 'px';
+  element.style['margin-left'] = -size + 'px';
+  element.style['margin-top'] = -size + 'px';
 
   document.body.appendChild(element);
 
@@ -195,17 +228,11 @@ function intersectRatio(rect, rect2) {
   );
 }
 
-function init(options) {
-  let { target } = options;
-  delete options.target;
-
-  let data = getData(target);
-  data.options = options;
-  let id = uuidv4();
-  items.push({ id, target, data });
-
-  return id;
-}
+let getParamsFromItem = item => ({
+  id: item.id,
+  target: item.target,
+  rect: item.data.rect,
+});
 
 let tick = () => {
   let a = anticipator;
@@ -229,8 +256,7 @@ let tick = () => {
    */
 
   items.forEach(item => {
-    let target = item.target;
-    let data = item.data;
+    let { target, data, options } = item;
 
     let intersectRatioValue = intersectRatio(data.rect, a.rect);
 
@@ -238,31 +264,32 @@ let tick = () => {
     if (intersectRatioValue && pointerMagnitude !== 0) {
       data.increment = data.increment + intersectRatioValue * 0.2;
       if (data.increment > 1 && data.increment < 2) {
-        if (data.options.className && target instanceof HTMLElement)
-          target.classList.add(data.options.className);
-        if (typeof data.options.aimEnter === "function")
-          data.options.aimEnter.call(target, item);
+        if (options.className && target instanceof HTMLElement)
+          target.classList.add(options.className);
+        if (typeof options.aimEnter === 'function')
+          options.aimEnter.call(target, getParamsFromItem(item));
 
         if (data.increment > 2) data.increment = 2;
 
-        if (DEBUG) a.element.style["background-color"] = "tomato";
+        if (DEBUG) a.element.style['background-color'] = 'tomato';
       } else if (data.increment > 2) {
         data.increment = 2;
-        if (DEBUG) a.element.style["background-color"] = "tomato";
+        if (DEBUG) a.element.style['background-color'] = 'tomato';
       }
       return;
     } else {
-      if (DEBUG) a.element.style["background-color"] = "yellowgreen";
+      if (DEBUG) a.element.style['background-color'] = 'yellowgreen';
     }
 
     if (data.increment !== 0) {
       data.increment = data.increment - 0.05;
       if (data.increment < 0) {
         data.increment = 0;
-        if (data.options.className && target instanceof HTMLElement)
-          target.classList.remove(data.options.className);
-        if (typeof data.options.aimExit === "function")
-          data.options.aimExit.call(target, item);
+        if (options.className && target instanceof HTMLElement)
+          target.classList.remove(options.className);
+        if (typeof options.aimExit === 'function') {
+          options.aimExit.call(target, getParamsFromItem(item));
+        }
       }
     }
   });
@@ -290,7 +317,7 @@ aim.start = () => {
   if (aimHasStarted) return;
 
   aimHasStarted = true;
-  document.addEventListener("pointermove", onPointerMove);
+  document.addEventListener('pointermove', onPointerMove);
   isRunning = true;
   run();
 };
@@ -300,7 +327,7 @@ aim.stop = () => {
   aimHasStarted = false;
 
   isRunning = false;
-  document.removeEventListener("pointermove", onPointerMove);
+  document.removeEventListener('pointermove', onPointerMove);
 };
 
 aim.remove = target => {

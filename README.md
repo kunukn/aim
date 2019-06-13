@@ -18,19 +18,31 @@ A couple of examples can be found the [examples page](http://kunukn.github.io/ai
 
 ## Usage
 
-Call the function on the elements to catch user aim and add a class which will be added or removed when aiming starts or ends
+Call the function on the element to catch user aim and add a class which will be added or removed when aiming starts or ends.
 
 ```javascript
 // Target by DOM element
-let id1 = aim({
+aim({
   target: document.querySelector('#my-element'),
   className: 'open',
 });
 
+aim.start(); // start the aim library
+```
+
+Call the function on the object to catch user aim for that area.
+
+```js
 // Target by manual data
-let id2 = aim({
-  target: {x: 0, y: 0, width: 200, height: 200},
-  aimEnter: () => console.log('target activated'),
+aim({
+  target: {x: 10, y: 10, width: 200, height: 200},
+  aimEnter: () => console.log('target enter'),
+});
+
+// Target by manual data
+aim({
+  target: {y: 10, width: '100%', height: 200},
+  aimEnter: () => console.log('target enter'),
 });
 
 aim.start(); // start the aim library
