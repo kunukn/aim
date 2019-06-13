@@ -95,12 +95,12 @@
         let target2 = document.querySelector("#target2");
         let target3 = document.querySelector("#target3");
 
-        aim({
+        let id1 = aim({
           target: target1,
           className: "open"
         });
 
-        aim({
+        let id2 = aim({
           target: target2,
           aimEnter: function(params) {
             this.classList.add("open");
@@ -110,13 +110,15 @@
           }
         });
 
-        aim({
+        let id3 = aim({
           target: { x: 0, y: 0, width: 200, height: 50 },
           aimEnter: params => {
-            console.log("enter");
+            console.log("enter " + Date.now());
+            document.title = "enter";
           },
           aimExit: params => {
-            console.log("exit");
+            console.log("exit " + Date.now());
+            document.title = "exit";
           }
         });
 

@@ -297,16 +297,54 @@ var aim = (() => {
     document.removeEventListener("mousemove", onMouseMove);
   };
 
+  aim.remove = target => {
+    let wasRemoved = false;
+    if (target instanceof HTMLElement) {
+      items.forEach(item => {
+        if (item.target === target) {
+          item = null;
+          wasRemoved = true;
+          return;
+        }
+      });
+    } else {
+      items.forEach(item => {
+        if (item.target.id === target.id) {
+          item = null;
+          wasRemoved = true;
+          return;
+        }
+      });
+    }
+    return wasRemoved;
+  };
+
   aim.updatePosition = target => {
-    items.forEach(item => {
-      if (item.element === target) {
-        let data = getData(target);
-        item.data.rect = data.rect;
-        item.data.center = data.center;
-        item.data.increment = data.increment;
-        return;
-      }
-    });
+    let wasUpdated = false;
+    if (target instanceof HTMLElement) {
+      items.forEach(item => {
+        if (item.target === target) {
+          let data = getData(target);
+          item.data.rect = data.rect;
+          item.data.center = data.center;
+          item.data.increment = data.increment;
+          wasUpdated = true;
+          return;
+        }
+      });
+    } else {
+      items.forEach(item => {
+        if (item.target.id === target.id) {
+          let data = getData(target);
+          item.data.rect = data.rect;
+          item.data.center = data.center;
+          item.data.increment = data.increment;
+          wasUpdated = true;
+          return;
+        }
+      });
+    }
+    return wasUpdated;
   };
 
   return aim;
