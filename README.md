@@ -8,6 +8,10 @@ A Vanilla JS library that anticipates on which element user is going to hover or
 
 UMD minified 3.82kb, gzipped 1.50kb
 
+## Demo
+
+https://s.codepen.io/kunukn/debug/690fb382ae6450c8bf14ad9909a60df2
+
 ## Examples
 
 A couple of examples can be found the [examples page](http://kunukn.github.io/aim/examples/index.html)
