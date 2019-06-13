@@ -9,7 +9,7 @@ The gif animation and algorithm concept is from https://github.com/cihadturhan/j
 
 ## Size
 
-UMD minified 4.59kb, gzipped minified 1.82kb
+UMD minified 4.6kb, gzipped minified 1.8kb
 
 ## Demo
 
