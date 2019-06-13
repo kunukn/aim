@@ -56,13 +56,13 @@ and you will see a rectangle moving around.
 If you don't like the default algorithm, define your own by the following procedure
 
 ```javascript
-function anticipateFunc(position, velocity, mouseX, mouseY, anticipator) {
+function anticipateFunc(position, velocity, pointerX, pointerY, anticipator) {
   /*
   Calculate the new position of anticipator using inputs
   position = {x:number,y:number}
   velocity = {x:number,y:number}
-  mouseX = number
-  mouseY = number
+  pointerX = number
+  pointerY = number
 
   Anticipator has some readonly values like the following
 

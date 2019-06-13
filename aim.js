@@ -5,15 +5,15 @@ var aim = (() => {
 
   let items = [];
   /**
-   * mouseVelocity Velocity of the mouse pointer
-   * mouseMagnitude Magnitude of velocity
-   * mousePosition Position of the mouse pointer
+   * pointerVelocity Velocity of the pointer pointer
+   * pointerMagnitude Magnitude of velocity
+   * pointerPosition Position of the pointer pointer
    * avgDeltaTime Average delta time for a simple calculation of new position, x = x0 +  v * t
-   * mouseX the last retrived x coordinate of mouse cursor
-   * mouseY the last retrived y coordinate of mouse cursor
-   * anticipator an object to debug where mouse is aiming
+   * pointerX the last retrived x coordinate of pointer cursor
+   * pointerY the last retrived y coordinate of pointer cursor
+   * anticipator an object to debug where pointer is aiming
    * anticipator.size, anticipator.radius, anticipator.center, anticipator.rect anticipator related properties
-   * anRad Radius (or size) of the anticipator, increases as mouse move faster
+   * anRad Radius (or size) of the anticipator, increases as pointer move faster
    */
 
   let clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -22,12 +22,12 @@ var aim = (() => {
 
   let createVector = () => ({ x: 0, y: 0 });
 
-  let mouseVelocity = createVector(),
-    mouseMagnitude = getMagnitude(mouseVelocity),
-    mousePosition = createVector(),
+  let pointerVelocity = createVector(),
+    pointerMagnitude = getMagnitude(pointerVelocity),
+    pointerPosition = createVector(),
     avgDeltaTime = 12,
-    mouseX = 0,
-    mouseY = 0,
+    pointerX = 0,
+    pointerY = 0,
     DEBUG = false,
     anticipator = {
       size: 50,
@@ -48,32 +48,32 @@ var aim = (() => {
    *
    * @param {type} position: position of anticipator
    * @param {type} velocity: velocity of anticipator
-   * @param {type} mouseX mouse X coordinate
-   * @param {type} mouseY mouse Y coordinate
+   * @param {type} pointerX pointer X coordinate
+   * @param {type} pointerY pointer Y coordinate
    * @param {type} anticipator anticipator object
    * @returns {undefined}
    */
 
-  function anticipateFunc(position, velocity, mouseX, mouseY, anticipator) {
+  function anticipateFunc(position, velocity, pointerX, pointerY, anticipator) {
     let a = anticipator;
 
     // smoothen velocity values with ratio 0.7 / 0.3
     if (position.x && position.y) {
-      velocity.x = velocity.x * 0.7 + (mouseX - position.x) * 0.3;
-      velocity.y = velocity.y * 0.7 + (mouseY - position.y) * 0.3;
+      velocity.x = velocity.x * 0.7 + (pointerX - position.x) * 0.3;
+      velocity.y = velocity.y * 0.7 + (pointerY - position.y) * 0.3;
     }
 
-    position.x = mouseX;
-    position.y = mouseY;
+    position.x = pointerX;
+    position.y = pointerY;
 
-    mouseMagnitude = getMagnitude(velocity);
-    if (mouseMagnitude < 0.1) {
+    pointerMagnitude = getMagnitude(velocity);
+    if (pointerMagnitude < 0.1) {
       velocity.x = 0;
       velocity.y = 0;
     }
 
     // change radius according to magnitude
-    a.effectiveSize = Math.sqrt(a.size * mouseMagnitude + 1);
+    a.effectiveSize = Math.sqrt(a.size * pointerMagnitude + 1);
 
     /*
       assign anticipator coordinates according to new velocity values
@@ -206,7 +206,7 @@ var aim = (() => {
 
     if (!items.length) return;
 
-    anticipateFunc(mousePosition, mouseVelocity, mouseX, mouseY, a);
+    anticipateFunc(pointerPosition, pointerVelocity, pointerX, pointerY, a);
 
     if (DEBUG) {
       a.element.style.transform = `translate(${a.center.x}px, ${
@@ -228,8 +228,8 @@ var aim = (() => {
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
 
-      // check if they intersects and mouse is not on the element
-      if (intersectRatioValue && mouseMagnitude !== 0) {
+      // check if they intersects and pointer is not on the element
+      if (intersectRatioValue && pointerMagnitude !== 0) {
         data.increment = data.increment + intersectRatioValue * 0.2;
         if (data.increment > 1 && data.increment < 2) {
           data.options.className &&
@@ -273,9 +273,9 @@ var aim = (() => {
     }
   };
 
-  let onMouseMove = e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  let onpointerMove = e => {
+    pointerX = e.clientX;
+    pointerY = e.clientY;
   };
 
   let aimHasStarted = false;
@@ -284,7 +284,7 @@ var aim = (() => {
     if (aimHasStarted) return;
 
     aimHasStarted = true;
-    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("pointermove", onpointerMove);
     isRunning = true;
     run();
   };
@@ -294,7 +294,7 @@ var aim = (() => {
     aimHasStarted = false;
 
     isRunning = false;
-    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("pointermove", onpointerMove);
   };
 
   aim.remove = target => {
