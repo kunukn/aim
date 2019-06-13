@@ -84,28 +84,40 @@
         </div>
       </div>
     </div>
+    <div id="target3" class="fixed-box">fixed box</div>
 
     <script src="../aim.js"></script>
     <script>
       (() => {
-        document.querySelector('#input-debug').click();
+        document.querySelector("#input-debug").click();
 
-        let target1 = document.querySelector('#target1');
-        let target2 = document.querySelector('#target2');
+        let target1 = document.querySelector("#target1");
+        let target2 = document.querySelector("#target2");
+        let target3 = document.querySelector("#target3");
 
         aim({
           target: target1,
-          className: 'open',
+          className: "open"
         });
 
         aim({
           target: target2,
           aimEnter: function(params) {
-            this.classList.add('open');
+            this.classList.add("open");
           },
           aimExit: function(params) {
             //this.classList.remove('open');
+          }
+        });
+
+        aim({
+          target: { x: 0, y: 0, width: 200, height: 50 },
+          aimEnter: params => {
+            console.log("enter");
           },
+          aimExit: params => {
+            console.log("exit");
+          }
         });
 
         aim.start();

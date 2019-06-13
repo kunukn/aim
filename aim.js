@@ -1,6 +1,6 @@
 var aim = (() => {
   function aim(options) {
-    init.call(options.target, options);
+    return init(options);
   }
 
   let items = [];
@@ -32,13 +32,13 @@ var aim = (() => {
     anticipator = {
       size: 50,
       center: createVector(),
-      effectiveSize: 1,
+      effectiveSize: 1
     };
   anticipator.rect = {
     x0: 0,
     y0: 0,
     x1: anticipator.size,
-    y1: anticipator.size,
+    y1: anticipator.size
   };
 
   /*
@@ -100,7 +100,7 @@ var aim = (() => {
   }
 
   function setDebug(isDebugEnabled) {
-    let debugElement = document.querySelector('#aim-debug');
+    let debugElement = document.querySelector("#aim-debug");
 
     if (isDebugEnabled) {
       if (debugElement) return;
@@ -117,26 +117,30 @@ var aim = (() => {
   aim.setDebug = setDebug;
 
   function setAnticipateFunction(func) {
-    if (typeof func === 'function') {
+    if (typeof func === "function") {
       anticipateFunc = func;
     }
   }
 
   aim.setAnticipateFunction = setAnticipateFunction;
 
-  let getData = element => {
-    let rect = element.getBoundingClientRect();
-    let { x, y, width, height } = rect;
+  let getData = target => {
+    let rect = null;
+    if (target instanceof HTMLElement) {
+      rect = target.getBoundingClientRect();
+    }
+
+    let { x, y, width, height } = rect || target;
 
     return {
       rect: {
         x0: x,
         y0: y,
         x1: x + width,
-        y1: y + height,
+        y1: y + height
       },
       center: { x, y },
-      increment: 0,
+      increment: 0
     };
   };
 
@@ -148,13 +152,13 @@ var aim = (() => {
    */
   function createDebugObject() {
     let size = anticipator.size;
-    let element = document.createElement('div');
-    element.setAttribute('id', 'aim-debug');
-    element.className = 'aim-debug';
-    element.style.width = 2 * size + 'px';
-    element.style.height = 2 * size + 'px';
-    element.style['margin-left'] = -size + 'px';
-    element.style['margin-top'] = -size + 'px';
+    let element = document.createElement("div");
+    element.setAttribute("id", "aim-debug");
+    element.className = "aim-debug";
+    element.style.width = 2 * size + "px";
+    element.style.height = 2 * size + "px";
+    element.style["margin-left"] = -size + "px";
+    element.style["margin-top"] = -size + "px";
 
     document.body.appendChild(element);
 
@@ -186,21 +190,15 @@ var aim = (() => {
   }
 
   function init(options) {
+    let { target } = options;
+    delete options.target;
 
-    let duplicate = false;
-    items.forEach(item => {
-      if (item.element === this) {
-        console.warn('init duplicate', this);
-        duplicate = true;
-        return;
-      }
-    });
-
-    if (duplicate) return;
-
-    let data = getData(this);
+    let data = getData(target);
     data.options = options;
-    items.push({ element: this, data });
+    let id = Date.now();
+    items.push({ id, target, data });
+
+    return id;
   }
 
   let tick = () => {
@@ -225,7 +223,7 @@ var aim = (() => {
      */
 
     items.forEach(item => {
-      let target = item.element;
+      let target = item.target;
       let data = item.data;
 
       let intersectRatioValue = intersectRatio(data.rect, a.rect);
@@ -236,19 +234,19 @@ var aim = (() => {
         if (data.increment > 1 && data.increment < 2) {
           data.options.className &&
             target.classList.add(data.options.className);
-          if (typeof data.options.aimEnter === 'function')
+          if (typeof data.options.aimEnter === "function")
             data.options.aimEnter.call(target, {});
 
           if (data.increment > 2) data.increment = 2;
 
-          if (DEBUG) a.element.style['background-color'] = 'tomato';
+          if (DEBUG) a.element.style["background-color"] = "tomato";
         } else if (data.increment > 2) {
           data.increment = 2;
-          if (DEBUG) a.element.style['background-color'] = 'tomato';
+          if (DEBUG) a.element.style["background-color"] = "tomato";
         }
         return;
       } else {
-        if (DEBUG) a.element.style['background-color'] = 'yellowgreen';
+        if (DEBUG) a.element.style["background-color"] = "yellowgreen";
       }
 
       if (data.increment !== 0) {
@@ -257,7 +255,7 @@ var aim = (() => {
           data.increment = 0;
           data.options.className &&
             target.classList.remove(data.options.className);
-          if (typeof data.options.aimExit === 'function')
+          if (typeof data.options.aimExit === "function")
             data.options.aimExit.call(target, {});
         }
       }
@@ -286,7 +284,7 @@ var aim = (() => {
     if (aimHasStarted) return;
 
     aimHasStarted = true;
-    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener("mousemove", onMouseMove);
     isRunning = true;
     run();
   };
@@ -296,13 +294,13 @@ var aim = (() => {
     aimHasStarted = false;
 
     isRunning = false;
-    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener("mousemove", onMouseMove);
   };
 
-  aim.updatePosition = element => {
+  aim.updatePosition = target => {
     items.forEach(item => {
-      if (item.element === element) {
-        let data = getData(element);
+      if (item.element === target) {
+        let data = getData(target);
         item.data.rect = data.rect;
         item.data.center = data.center;
         item.data.increment = data.increment;

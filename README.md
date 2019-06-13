@@ -13,8 +13,15 @@ A couple of examples can be found the [examples page](http://kunukn.github.io/ai
 Call the function on the elements to catch user aim and add a class which will be added or removed when aiming starts or ends
 
 ```javascript
-let id = aim({
+// Target by DOM element
+let id1 = aim({
   target: document.querySelector('#my-element'),
+  className: 'open',
+});
+
+// Target by manual data
+let id2 = aim({
+  target: {x: 0, y: 0, width: 200, height: 200},
   className: 'open',
 });
 
