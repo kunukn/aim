@@ -1,13 +1,15 @@
 # aim
 
 A Vanilla JS library that anticipates on which element user is going to hover or click.
-The algorithm is based on https://github.com/cihadturhan/jquery-aim
+
+The gif animation and algorithm concept is from https://github.com/cihadturhan/jquery-aim
 
 ![test](img/demo.gif 'lorem')
 
+
 ## Size
 
-UMD minified 3.82kb, gzipped 1.50kb
+UMD minified 4.59kb, gzipped minified 1.82kb
 
 ## Demo
 
