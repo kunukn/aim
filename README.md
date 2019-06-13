@@ -1,6 +1,7 @@
 # aim
 
 A Vanilla JS library that anticipates on which element user is going to hover or click.
+The algorithm is based on https://github.com/cihadturhan/jquery-aim
 
 ![test](img/demo.gif 'lorem')
 
@@ -140,3 +141,8 @@ aim.setAnticipateFunction(anticipateFunc);
 ### build
 
 `yarn build`
+
+## Learning materials
+
+If you want to learn how to implement tracking algorithm like this. Then I recommend to explore this resource:
+https://natureofcode.com/book/chapter-1-vectors/
