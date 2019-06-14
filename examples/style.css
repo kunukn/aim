@@ -48,19 +48,3 @@ header.shown {
 .fixed-box.active {
   background: #ccc;
 }
-
-#__aim-debug {
-  position: fixed;
-  top: 0;
-  left: 0;
-  border: 2px solid #333;
-  opacity: 0.3;
-  background-color: yellowgreen;
-  pointer-events: none;
-}
-#__aim-debug.__aim-debug--high {
-  background-color: purple;
-}
-#__aim-debug.__aim-debug--hit {
-  background-color: tomato;
-}

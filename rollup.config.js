@@ -96,6 +96,7 @@ export default [
         targets: [
           { src: 'dist/aim.umd.js', dest: 'examples' },
           { src: 'src/*.css', dest: 'examples' },
+          { src: 'src/aim-debug.css', dest: 'dist' },
         ],
       }),
     ].filter(Boolean),

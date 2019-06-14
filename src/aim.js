@@ -262,7 +262,7 @@ let tick = () => {
     // check if they intersects and pointer is not on the element
     if (intersectRatioValue && pointerMagnitude !== 0) {
       data.increment += intersectRatioValue * 0.2;
-      if (1 > data.increment && data.increment < 2) {
+      if (1 < data.increment && data.increment < 2) {
         if (options.className && target instanceof HTMLElement)
           target.classList.add(options.className);
         if (typeof options.aimEnter === 'function')
@@ -274,7 +274,7 @@ let tick = () => {
       } else if (data.increment > 2) {
         data.increment = 2;
         if (DEBUG) {
-          a.element.classList.add('__aim-debug--high');
+          a.element.classList.add('__aim-debug--hit-2');
         }
       }
       return;
@@ -282,7 +282,7 @@ let tick = () => {
       if (DEBUG) {
         setTimeout(() => {
           a.element.classList.remove('__aim-debug--hit');
-          a.element.classList.remove('__aim-debug--high');
+          a.element.classList.remove('__aim-debug--hit-2');
         }, 0);
       }
     }
