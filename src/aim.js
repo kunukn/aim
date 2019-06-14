@@ -307,7 +307,7 @@ let run = () => {
   if (isRunning) requestAnimationFrame(run);
 };
 
-let onPointerMove = e => {
+let onMove = e => {
   pointerX = e.clientX;
   pointerY = e.clientY;
 };
@@ -318,7 +318,7 @@ aim.start = () => {
   if (aimHasStarted) return;
 
   aimHasStarted = true;
-  document.addEventListener('pointermove', onPointerMove);
+  document.addEventListener('mousemove', onMove);
   isRunning = true;
   run();
 };
@@ -328,7 +328,7 @@ aim.stop = () => {
   aimHasStarted = false;
 
   isRunning = false;
-  document.removeEventListener('pointermove', onPointerMove);
+  document.removeEventListener('mousemove', onMove);
 };
 
 aim.remove = target => {
