@@ -89,36 +89,36 @@
     <div id="target3" class="fixed-box">fixed box</div>
 
     <script type="module">
-      import aim from './aim.js';
+      import aim from "./aim.js";
 
-      window.aim = aim;
+      window.aim = aim; // for the debug html inline click event
 
-      document.querySelector('#input-debug').click();
-
-      let target1 = document.querySelector('#target1');
-      let target2 = document.querySelector('#target2');
-      let target3 = document.querySelector('#target3');
+      document.querySelector("#input-debug").click();
 
       let ids = aim({
-        target: '.target',
-        className: 'open',
-      });
-
-
-      let id3 = aim({
-        target: { x: 0, y: 0, width: 200, height: 50 },
+        target: ".target",
+        className: "open",
         aimEnter: params => {
-          console.log('enter ' + Date.now());
-          document.title = 'enter';
+          console.log("enter ", params);
         },
         aimExit: params => {
-          console.log('exit ' + Date.now());
-          document.title = 'exit';
+          console.log("exit ", params);
+        }
+      });
+
+      aim({
+        target: { x: 100, y: 20, width: 200, height: 50 },
+        aimEnter: params => {
+          console.log("enter ", params);
+          document.title = "enter";
         },
+        aimExit: params => {
+          console.log("exit ", params);
+          document.title = "exit";
+        }
       });
 
       aim.start();
     </script>
-
   </body>
 </html>

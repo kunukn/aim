@@ -45,6 +45,8 @@ let clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 let getMagnitude = ({ x, y }) => Math.sqrt(x * x + y * y);
 
+let getAngle = ({ x, y }) => (Math.atan2(y, x) * 180) / Math.PI;
+
 let createVector = () => ({ x: 0, y: 0 });
 
 let pointerVelocity = createVector(),
@@ -79,7 +81,13 @@ anticipator.rect = {
  * @returns {undefined}
  */
 
-let anticipateFunc = (position, velocity, pointerX, pointerY, anticipator) => {
+let anticipateFunc = ({
+  position,
+  velocity,
+  pointerX,
+  pointerY,
+  anticipator
+}) => {
   let a = anticipator;
 
   // smoothen velocity values with ratio 0.7 / 0.3
@@ -215,10 +223,14 @@ function intersectRatio(rect, rect2) {
   );
 }
 
-let getParamsFromItem = item => ({
+let getParamsForCallback = ({ item, intersectRatioValue }) => ({
   id: item.id,
   target: item.target,
-  rect: item.data.rect
+  rect: item.data.rect,
+  angle: getAngle(pointerVelocity),
+  intersectRatioValue: intersectRatioValue || 0,
+  pointerVelocity,
+  pointerMagnitude
 });
 
 let tick = () => {
@@ -226,7 +238,13 @@ let tick = () => {
 
   if (!items.length) return;
 
-  anticipateFunc(pointerPosition, pointerVelocity, pointerX, pointerY, a);
+  anticipateFunc({
+    position: pointerPosition,
+    velocity: pointerVelocity,
+    pointerX,
+    pointerY,
+    anticipator
+  });
 
   if (DEBUG) {
     a.element.style.transform = `translate(${a.center.x}px, ${
@@ -254,16 +272,21 @@ let tick = () => {
         if (options.className && target instanceof HTMLElement)
           target.classList.add(options.className);
         if (typeof options.aimEnter === "function")
-          options.aimEnter.call(target, getParamsFromItem(item));
+          options.aimEnter.call(
+            target,
+            getParamsForCallback({
+              item,
+              intersectRatioValue
+            })
+          );
 
         if (DEBUG) {
           a.element.classList.add("__aim-debug--hit");
         }
       } else if (data.increment > 2) {
         data.increment = 2;
-        if (DEBUG) {
-          a.element.classList.add("__aim-debug--hit-2");
-        }
+        if (DEBUG) a.element.classList.add("__aim-debug--hit-2");
+      } else {
       }
       return;
     } else {
@@ -275,14 +298,14 @@ let tick = () => {
       }
     }
 
-    if (data.increment !== 0) {
+    if (data.increment !== 0 && intersectRatioValue === 0) {
       data.increment -= 0.05;
       if (data.increment < 0) {
         data.increment = 0;
         if (options.className && target instanceof HTMLElement)
           target.classList.remove(options.className);
         if (typeof options.aimExit === "function") {
-          options.aimExit.call(target, getParamsFromItem(item));
+          options.aimExit.call(target, getParamsForCallback({ item }));
         }
       }
     }
