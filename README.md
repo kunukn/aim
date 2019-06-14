@@ -16,11 +16,19 @@ UMD minified 4.6kb, gzipped minified 1.8kb
 https://s.codepen.io/kunukn/debug/690fb382ae6450c8bf14ad9909a60df2
 
 
+## Getting started
+
+`npm i @kunukn/aim`
+
+
+
 ## Usage
 
 Call the function on the `querySelectorAll string` to catch user aim and add a class which will be added or removed when aiming starts or ends.
 
 ```javascript
+import aim from '@kunukn/aim'
+
 // Target all elements who has a class name of target
 aim({
   target: '.target',
@@ -76,6 +84,11 @@ let id = aim({
 
 aim.start();
 ```
+
+## CDN
+
+https://unpkg.com/@kunukn/aim/
+
 
 ## Debugging
 
