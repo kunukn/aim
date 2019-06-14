@@ -18,8 +18,9 @@ https://s.codepen.io/kunukn/debug/690fb382ae6450c8bf14ad9909a60df2
 
 ## Getting started
 
-`npm i @kunukn/aim`
-
+`npm i @kunukn/aim`<br>
+or<br>
+`yarn add @kunukn/aim`
 
 
 ## Usage
@@ -89,6 +90,10 @@ aim.start();
 
 https://unpkg.com/@kunukn/aim/
 
+## Supported browsers
+
+IE11 + Modern browsers
+
 
 ## Debugging
 
@@ -98,9 +103,10 @@ To see where your cursor is aiming and check if it intersects with elements use
 aim.setDebug(true);
 ```
 
-You will need to add CSS for your debug object.
+You will need to add CSS for the debug object.
 
-```css
+```html
+<style>
 #__aim-debug {
   position: fixed;
   top: 0;
@@ -110,12 +116,13 @@ You will need to add CSS for your debug object.
   background-color: yellowgreen;
   pointer-events: none;
 }
-#__aim-debug.__aim-debug--high {
+#__aim-debug.__aim-debug--hit {
   background-color: purple;
 }
-#__aim-debug.__aim-debug--hit {
+#__aim-debug.__aim-debug--hit-2 {
   background-color: tomato;
 }
+</style>
 ```
 
 Then you will see a rectangle moving around.
