@@ -8,7 +8,7 @@ The gif animation and algorithm concept is from https://github.com/cihadturhan/j
 
 ## Size
 
-UMD minified 4.7kb, gzipped minified 1.9kb
+UMD minified 4.7kb, gzipped minified **1.9kb**
 
 ## Demo
 
