@@ -4,8 +4,7 @@ A Vanilla JS library that anticipates on which element user is going to hover or
 
 The gif animation and algorithm concept is from https://github.com/cihadturhan/jquery-aim
 
-![test](img/demo.gif 'lorem')
-
+![test](img/demo.gif "lorem")
 
 ## Size
 
@@ -15,25 +14,23 @@ UMD minified 4.7kb, gzipped minified 1.9kb
 
 https://s.codepen.io/kunukn/debug/690fb382ae6450c8bf14ad9909a60df2
 
-
 ## Getting started
 
 `npm i @kunukn/aim`<br>
 or<br>
 `yarn add @kunukn/aim`
 
-
 ## Usage
 
 Call the function on the `querySelectorAll string` to catch user aim and add a class which will be added or removed when aiming starts or ends.
 
 ```javascript
-import aim from '@kunukn/aim'
+import aim from "@kunukn/aim";
 
 // Target all elements who has a class name of target
 aim({
-  target: '.target',
-  className: 'open',
+  target: ".target",
+  className: "open"
 });
 
 aim.start(); // start the aim library, you only need to run this once.
@@ -44,8 +41,8 @@ Call the function on the element to catch user aim and add a class which will be
 ```javascript
 // Target by DOM element
 aim({
-  target: document.querySelector('#my-element'),
-  className: 'open',
+  target: document.querySelector("#my-element"),
+  className: "open"
 });
 
 aim.start(); // start the aim library
@@ -57,13 +54,13 @@ Call the function on the object to catch user aim for that area.
 // Target by manual data
 aim({
   target: { x: 10, y: 10, width: 200, height: 200 },
-  aimEnter: () => console.log('target enter'),
+  aimEnter: () => console.log("target enter")
 });
 
 // Target by manual data, full width example
 aim({
-  target: { y: 10, width: '100%', height: 200 },
-  aimEnter: () => console.log('target enter'),
+  target: { y: 10, width: "100%", height: 200 },
+  aimEnter: () => console.log("target enter")
 });
 
 aim.start(); // start the aim library
@@ -72,15 +69,16 @@ aim.start(); // start the aim library
 If you want to execute a function on aim starts or ends, use the `aimEnter` and `aimExit` options
 
 ```javascript
-let menu = document.querySelector('#menu');
+let menu = document.querySelector("#menu");
 let id = aim({
-  target: '#hamburger',
-  aimEnter: () => {
-    menu.style.display = 'block';
+  target: "#hamburger",
+  aimEnter: function() {
+    menu.style.display = "block";
+    console.log(this); // the hamburger element
   },
-  aimExit: () => {
-    menu.style.display = 'none';
-  },
+  aimExit: function() {
+    menu.style.display = "none";
+  }
 });
 
 aim.start();
@@ -94,7 +92,6 @@ https://unpkg.com/@kunukn/aim/
 
 IE11 + Modern browsers
 
-
 ## Debugging
 
 To see where your cursor is aiming and check if it intersects with elements use
@@ -107,26 +104,25 @@ You will need to add CSS for the debug object.
 
 ```html
 <style>
-#__aim-debug {
-  position: fixed;
-  top: 0;
-  left: 0;
-  border: 2px solid #333;
-  opacity: 0.3;
-  background-color: yellowgreen;
-  pointer-events: none;
-}
-#__aim-debug.__aim-debug--hit {
-  background-color: purple;
-}
-#__aim-debug.__aim-debug--hit-2 {
-  background-color: tomato;
-}
+  #__aim-debug {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border: 2px solid #333;
+    opacity: 0.3;
+    background-color: yellowgreen;
+    pointer-events: none;
+  }
+  #__aim-debug.__aim-debug--hit {
+    background-color: purple;
+  }
+  #__aim-debug.__aim-debug--hit-2 {
+    background-color: tomato;
+  }
 </style>
 ```
 
 Then you will see a rectangle moving around.
-
 
 ## Defining own function
 
