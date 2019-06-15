@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font: 16px Verdana, sans-serif;
+  margin: 0;
+}
+
+.app {
+  position: relative;
+  min-height: 100vh;
+}
+
+.box {
+  border-radius: 4px;
+  padding: 8px;
+  background: pink;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+p {
+  margin: 0;
+  position: relative;
+}
+
+.arrow {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 200%;
+}
