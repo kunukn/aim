@@ -224,13 +224,13 @@ function intersectRatio(rect, rect2) {
 }
 
 let getParamsForCallback = ({ item, intersectRatioValue }) => ({
-  id: item.id,
-  target: item.target,
-  rect: item.data.rect,
   angle: getAngle(pointerVelocity),
+  velocity: pointerVelocity,
+  magnitude: pointerMagnitude,
   intersectRatioValue: intersectRatioValue || 0,
-  pointerVelocity,
-  pointerMagnitude
+  rect: item.data.rect,
+  id: item.id,
+  target: item.target
 });
 
 let tick = () => {
@@ -367,25 +367,29 @@ aim.remove = target => {
 };
 
 aim.updatePosition = target => {
+  if (!target) return false;
+
   let wasUpdated = false;
-  if (target instanceof HTMLElement) {
+
+  if (target === "dom") {
     items.forEach(item => {
-      if (item.target === target) {
-        let data = getData(target);
-        item.data.rect = data.rect;
-        item.data.center = data.center;
-        item.data.increment = data.increment;
+      if (item.target instanceof HTMLElement) {
+        item.data = getData(item.target);
+        wasUpdated = true;
+      }
+    });
+  } else if (target.id) {
+    items.forEach(item => {
+      if (item.id === target.id) {
+        item.data = getData(target);
         wasUpdated = true;
         return;
       }
     });
   } else {
     items.forEach(item => {
-      if (item.id === target.id) {
-        let data = getData(target);
-        item.data.rect = data.rect;
-        item.data.center = data.center;
-        item.data.increment = data.increment;
+      if (item.target === target) {
+        item.data = getData(target);
         wasUpdated = true;
         return;
       }
