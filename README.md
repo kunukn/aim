@@ -42,7 +42,9 @@ Call the function on the element to catch user aim and add a class which will be
 // Target by DOM element
 aim({
   target: document.querySelector("#my-element"),
-  className: "open"
+  className: "open",
+  aimEnter: params => console.log(params),
+  aimExit: params => console.log(params)
 });
 
 aim.start(); // start the aim library
@@ -134,7 +136,6 @@ Stop the library and the event listeners
 
 `aim.stop()`
 
-
 Tell the library to update it's internal information of where the element is positioned.
 
 `aim.updatePosition(target)`
@@ -147,11 +148,11 @@ Target can either be
 
 Remove all targets.
 
-`aim.removeAll()` 
+`aim.removeAll()`
 
 Remove the target.
 
-`aim.remove(target)` 
+`aim.remove(target)`
 
 Target can either be
 
