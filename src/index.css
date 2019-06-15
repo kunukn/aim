@@ -10,21 +10,27 @@ body {
   position: relative;
 }
 
+.boxes{
+  margin: 0 auto;
+  padding: 20px;
+  flex-wrap: wrap;
+  display: flex;
+  max-width: 600px;
+  outline: 1px solid hotpink;
+}
+
 .box {
   border-radius: 4px;
   padding: 8px;
+  margin: 20px;
   background: pink;
   width: 100px;
   height: 100px;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  margin-left: -50px;
-  margin-top: -50px;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   transition: background-color 250ms;
+  position: relative;
 }
 
 .active {
