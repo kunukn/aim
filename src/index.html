@@ -30,8 +30,6 @@
 
       window.aim = aim; // for the debug html inline click event
 
-      document.querySelector("#input-debug").click();
-
       let ids = aim({
         target: ".box",
         className: "active",
@@ -49,6 +47,8 @@
       });
 
       aim.start();
+
+      document.querySelector("#input-debug").click();
     </script>
   </body>
 </html>
