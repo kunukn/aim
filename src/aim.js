@@ -49,6 +49,18 @@ let getAngle = ({ x, y }) => (Math.atan2(y, x) * 180) / Math.PI;
 
 let createVector = () => ({ x: 0, y: 0 });
 
+let createAnticipator = ({ size }) => ({
+  size,
+  center: createVector(),
+  effectiveSize: 1,
+  rect: {
+    x0: 0,
+    y0: 0,
+    x1: size,
+    y1: size
+  }
+});
+
 let pointerVelocity = createVector(),
   pointerMagnitude = getMagnitude(pointerVelocity),
   pointerPosition = createVector(),
@@ -56,17 +68,7 @@ let pointerVelocity = createVector(),
   pointerX = 0,
   pointerY = 0,
   DEBUG = false,
-  anticipator = {
-    size: 50,
-    center: createVector(),
-    effectiveSize: 1
-  };
-anticipator.rect = {
-  x0: 0,
-  y0: 0,
-  x1: anticipator.size,
-  y1: anticipator.size
-};
+  anticipator = createAnticipator({ size: 50 });
 
 /*
  * Default anticipate function
@@ -146,8 +148,8 @@ aim.setDebug = isDebugEnabled => {
   DEBUG = isDebugEnabled;
 };
 
-aim.setAnticipateFunction = func => {
-  anticipateFunc = func;
+aim.setAnticipator = ({ size }) => {
+  anticipator = createAnticipator({ size });
 };
 
 let getData = target => {

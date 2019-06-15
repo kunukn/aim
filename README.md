@@ -124,41 +124,39 @@ You will need to add CSS for the debug object.
 
 Then you will see a rectangle moving around.
 
-## Defining own function
-
-If you don't like the default algorithm, define your own by the following procedure
-
-```javascript
-function anticipateFunc(position, velocity, pointerX, pointerY, anticipator) {
-  /*
-  Calculate the new position of anticipator using inputs
-  position = {x:number,y:number}
-  velocity = {x:number,y:number}
-  pointerX = number
-  pointerY = number
-
-  Anticipator has some readonly values like the following
-
-  {
-      size: 50,
-      center: {x: 0, y: 0},
-      effectiveSize: 1,
-      rect : {x0: 0, y0: 0, x1: 50, y1: 50}
-  }
-
-  */
-}
-
-aim.setAnticipateFunction(anticipateFunc);
-```
-
 ## Other methods
 
-`aim.stop()` stop the library
+Increase or decrease the hit area
 
-`aim.remove(target)` remove the target. Target can either be a DOM element or an object with id `{id: 'the-given-id-when-the-target-was-added'}`.
+`aim.setAnticipator({size: 100}) // default value is 50`
 
-`aim.updatePosition(target)` Tell the library to update it's internal information of where the element is positioned. Target can either be a DOM element or an object with id.
+Stop the library and the event listeners
+
+`aim.stop()`
+
+
+Tell the library to update it's internal information of where the element is positioned.
+
+`aim.updatePosition(target)`
+
+Target can either be
+
+- `"dom"` which updates all the DOM elements positions.
+- a DOM element
+- an object with id `{id: 'the-given-id-when-the-target-was-added', x, y, width, height}`
+
+Remove all targets.
+
+`aim.removeAll()` 
+
+Remove the target.
+
+`aim.remove(target)` 
+
+Target can either be
+
+- DOM element
+- and object with an id
 
 ## Development
 

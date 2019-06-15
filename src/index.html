@@ -84,12 +84,17 @@
         }
       });
 
+      aim.setAnticipator({size: 100});
       aim.start();
 
       window.addEventListener(
         "resize",
         _.debounce(() => {
-          console.log("aim updatePosition ", aim.updatePosition("dom"), Date.now());
+          console.log(
+            "aim updatePosition ",
+            aim.updatePosition("dom"),
+            Date.now()
+          );
         }, 100)
       );
 

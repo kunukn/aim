@@ -1,6 +1,6 @@
 {
   "name": "@kunukn/aim",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A library to make websites more usable by guessing which element is going to be hovered/clicked",
   "main": "dist/aim.umd.js",
   "module": "dist/aim.es.js",
