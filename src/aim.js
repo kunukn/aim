@@ -342,22 +342,26 @@ aim.stop = () => {
   document.removeEventListener("mousemove", onMove);
 };
 
+aim.removeAll = () => {
+  items = [];
+};
+
 aim.remove = target => {
+  if (!target) return false;
+
   let wasRemoved = false;
-  if (target instanceof HTMLElement) {
-    items.forEach(item => {
-      if (item.target === target) {
-        item = null;
-        wasRemoved = true;
-        return;
-      }
-    });
-  } else {
+  if (target.id) {
     items.forEach(item => {
       if (item.id === target.id) {
         item = null;
         wasRemoved = true;
-        return;
+      }
+    });
+  } else {
+    items.forEach(item => {
+      if (item.target === target) {
+        item = null;
+        wasRemoved = true;
       }
     });
   }

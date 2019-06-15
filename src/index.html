@@ -89,7 +89,7 @@
       window.addEventListener(
         "resize",
         _.debounce(() => {
-          console.log("aim updatePosition ", aim.updatePosition("dom"));
+          console.log("aim updatePosition ", aim.updatePosition("dom"), Date.now());
         }, 100)
       );
 
