@@ -1,6 +1,7 @@
 # aim
 
 A Vanilla JS library that anticipates on which element user is going to hover or click.
+A mouse is required.
 
 The gif animation and algorithm concept is from https://github.com/cihadturhan/jquery-aim
 
