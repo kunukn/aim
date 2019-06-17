@@ -23,41 +23,49 @@
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
 
         <div class="box">
           <p>box</p>
           <div class="arrow">&rarr;</div>
+          <div class="info"></div>
         </div>
       </div>
     </div>
@@ -75,9 +83,12 @@
           //console.log("enter ", params);
           let p = this.querySelector("p");
           let arrow = this.querySelector(".arrow");
+          let info = this.querySelector(".info");
+          
           let rotate = Math.round(params.angle);
           arrow.style.transform = `rotate(${rotate}deg)`;
           p.textContent = rotate + " deg";
+          info.textContent = 'power '+Math.round(+params.magnitude);
         },
         aimExit: function(params) {
           //console.log("exit ", params);
