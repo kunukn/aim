@@ -84,18 +84,18 @@
           let p = this.querySelector("p");
           let arrow = this.querySelector(".arrow");
           let info = this.querySelector(".info");
-          
+
           let rotate = Math.round(params.angle);
           arrow.style.transform = `rotate(${rotate}deg)`;
           p.textContent = rotate + " deg";
-          info.textContent = 'power '+Math.round(+params.magnitude);
+          info.textContent = "power " + Math.round(+params.magnitude);
         },
         aimExit: function(params) {
           //console.log("exit ", params);
         }
       });
 
-      aim.setAnticipator({size: 100});
+      aim.setAnticipator({ size: 100 });
       aim.start();
 
       window.addEventListener(
@@ -109,7 +109,17 @@
         }, 100)
       );
 
-      document.querySelector("#input-debug").click();
+      function simulateClick(query) {
+        var event = new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: true
+        });
+        var debug = document.querySelector(query);
+        debug.dispatchEvent(event);
+      }
+
+      simulateClick("#input-debug");
     </script>
   </body>
 </html>
