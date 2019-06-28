@@ -10,7 +10,7 @@ body {
   position: relative;
 }
 
-.boxes{
+.boxes {
   margin: 0 auto;
   padding: 20px;
   flex-wrap: wrap;
@@ -47,4 +47,11 @@ p {
   bottom: 0;
   right: 0;
   font-size: 200%;
+}
+
+.info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 12px;
 }
