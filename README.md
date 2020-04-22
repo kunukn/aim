@@ -5,7 +5,7 @@ A mouse is required.
 
 The algorithm concept is from https://github.com/cihadturhan/jquery-aim
 
-![test](img/demo.gif "lorem")
+![test](img/demo.gif "demo")
 
 ## Size
 
